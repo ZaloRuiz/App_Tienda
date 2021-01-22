@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DistribuidoraFabio.Cliente.AgregarCliente"
+             Visual="Material"
+             BackgroundColor="#324A51">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Entry x:Name="nombreEntry" HorizontalOptions="FillAndExpand" TextColor="Black" Placeholder="Nombre"/>
+                <StackLayout Orientation="Horizontal">
+                    <Entry x:Name="ubconfirmacionEntry" WidthRequest="300" Placeholder="Ubicacion" TextColor="Black"/>
+                    <Entry x:Name="ubicacionLatitudEntry" IsVisible="False"/>
+                    <Entry x:Name="ubicacionLongitudEntry" IsVisible="False"/>
+                    <Button x:Name="btnUbicacion" HorizontalOptions="Fill" Text="Obtener ubicacion" Clicked="BtnUbicacion_Clicked"/>
+                </StackLayout>
+                <Entry x:Name="telefonoEntry" HorizontalOptions="FillAndExpand" TextColor="Black" Placeholder="Telefono" Keyboard="Numeric"/>
+                <Entry x:Name="nitEntry" HorizontalOptions="FillAndExpand" Placeholder="NIT" TextColor="Black" Keyboard="Numeric"/>
+                <StackLayout Padding="20">
+                    <Button Text="Guardar" x:Name="btnGuardarCliente" Clicked="BtnGuardarCliente_Clicked"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DistribuidoraFabio.Compra.MostrarCompra"
+             Visual="Material"
+             BackgroundColor="#324A51">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Entry x:Name="idCompraEntry" IsVisible="False"/>
+                <StackLayout Orientation="Horizontal" Padding="5,0,5,0">
+                    <Label Text="Factura: " WidthRequest="200" TextColor="#4DCCE8" FontSize="Large"/>
+                    <Label x:Name="facturaEntry" HorizontalOptions="FillAndExpand" TextColor="#95B0B7" FontSize="Large"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="5,0,5,0">
+                    <Label Text="Fecha: " WidthRequest="200" TextColor="#4DCCE8" FontSize="Large"/>
+                    <Label x:Name="fechaEntry" HorizontalOptions="FillAndExpand" TextColor="#95B0B7" FontSize="Large"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="5,0,5,0">
+                    <Label Text="Proveedor: " WidthRequest="200" TextColor="#4DCCE8" FontSize="Large"/>
+                    <Label x:Name="proveedorEntry" HorizontalOptions="FillAndExpand" TextColor="#95B0B7" FontSize="Large"/>
+                </StackLayout>
+                <StackLayout x:Name="stkPrd" Padding="5,0,5,0">
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="5,0,5,0">
+                    <Label Text="Total: " WidthRequest="200" TextColor="#4DCCE8" FontSize="Large"/>
+                    <Label x:Name="totalEntry" HorizontalOptions="FillAndExpand" TextColor="#95B0B7" FontSize="Large"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
