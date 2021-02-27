@@ -15,41 +15,47 @@ using Xamarin.Forms.Xaml;
 
 namespace DistribuidoraFabio.Venta
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AgregarVenta : ContentPage
-	{
-		List<ProductoNombre> prods = new List<ProductoNombre>();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class AgregarVenta : ContentPage
+    {
+        List<ProductoNombre> prods = new List<ProductoNombre>();
         List<Vendedores> vendedorList = new List<Vendedores>();
         List<Models.Cliente> clienteList = new List<Models.Cliente>();
         private int idProductoSelected = 0;
         private decimal MontoTotal = 0;
         private int idClienteSelected = 0;
         private int idVendedorSelected = 0;
-		public AgregarVenta()
-		{
-			InitializeComponent();
+        public AgregarVenta()
+        {
+            InitializeComponent();
             App._detalleVData.Clear();
             tipoVentaEntry.ItemsSource = new List<string> { "Contado", "Credito" };
             GetDataCliente();
-			GetDataVendedor();
-            GetTipoProducto();
+            GetDataVendedor();
             GetProductos();
         }
-		protected override void OnAppearing()
-		{
+        protected override void OnAppearing()
+        {
             listProductos.ItemsSource = App._detalleVData;
-			base.OnAppearing();
-		}
+            base.OnAppearing();
+        }
         private async void GetDataCliente()
         {
-            HttpClient client = new HttpClient();
-            var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/clientes/listaCliente.php");
-            var clientes = JsonConvert.DeserializeObject<List<Models.Cliente>>(response).ToList();
-            clientePicker.ItemsSource = clientes;
-            foreach(var item in clientes)
-			{
-                clienteList.Add(item);
-			}
+            try
+            {
+                HttpClient client = new HttpClient();
+                var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/clientes/listaCliente.php");
+                var clientes = JsonConvert.DeserializeObject<List<Models.Cliente>>(response).ToList();
+                clientePicker.ItemsSource = clientes;
+                foreach (var item in clientes)
+                {
+                    clienteList.Add(item);
+                }
+            }
+            catch (Exception error)
+            {
+                await DisplayAlert("Erro", error.ToString(), "OK");
+            }
         }
         private async void GetDataVendedor()
         {
@@ -59,45 +65,32 @@ namespace DistribuidoraFabio.Venta
                 var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/vendedores/listaVendedores.php");
                 var vendedores = JsonConvert.DeserializeObject<List<Vendedores>>(response).ToList();
                 vendedorPicker.ItemsSource = vendedores;
-                foreach(var item in vendedores)
-				{
+                foreach (var item in vendedores)
+                {
                     vendedorList.Add(item);
-				}
+                }
             }
             catch (Exception error)
             {
-                await DisplayAlert("Erro", error.ToString(), "OK");
-            }
-        }
-        private async void GetTipoProducto()
-		{
-            try
-            {
-                HttpClient client = new HttpClient();
-                var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/tipoproductos/listaTipoproducto.php");
-                var tp_productos = JsonConvert.DeserializeObject<List<Tipo_producto>>(response).ToList();
-                picker_TP.ItemsSource = tp_productos;
-            }
-            catch (Exception error)
-            {
-                await DisplayAlert("Erro", error.ToString(), "OK");
+                await DisplayAlert("Error", error.ToString(), "OK");
             }
         }
         public async void GetProductos()
-		{
+        {
             try
             {
                 HttpClient client = new HttpClient();
                 var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/productos/listaProductoNombres.php");
                 var prodsList = JsonConvert.DeserializeObject<List<ProductoNombre>>(response).ToList();
-                foreach(var item in prodsList)
+                foreach (var item in prodsList)
                 {
                     prods.Add(item);
-				}
+                }
+                picker_Producto.ItemsSource = prodsList;
             }
             catch (Exception error)
             {
-                await DisplayAlert("Erro", error.ToString(), "OK");
+                await DisplayAlert("Error", error.ToString(), "OK");
             }
         }
         private string vendedorPick;
@@ -174,68 +167,42 @@ namespace DistribuidoraFabio.Venta
                 }
             }
         }
-		string pickedTP;
-		private async void picker_TP_SelectedIndexChanged(object sender, EventArgs e)
-		{
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-
-            if(selectedIndex != -1)
-			{
-                pickedTP = picker.Items[selectedIndex];
-			}
-            try
-			{
-                picker_Producto.Items.Clear();
-                foreach (var item in prods)
-				{
-                    if(item.nombre_tipo_producto == pickedTP)
-					{
-                        picker_Producto.Items.Add(item.display_text_nombre);
-					}
-				}
-            }
-            catch (Exception error)
-            {
-                await DisplayAlert("Erro", error.ToString(), "OK");
-            }
-		}
         string pickedProducto;
         private async void picker_Producto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                var picker = (Picker)sender;
-                int selectedIndex = picker.SelectedIndex;
+			try
+			{
+				var picker = (Picker)sender;
+				int selectedIndex = picker.SelectedIndex;
 
-                if (selectedIndex != -1)
-                {
-                    pickedProducto = picker.Items[selectedIndex];
-                    try
-                    {
-                        foreach(var item in prods)
+				if (selectedIndex != -1)
+				{
+					pickedProducto = picker.Items[selectedIndex];
+					try
+					{
+						foreach (var item in prods)
 						{
-                            if (pickedProducto == item.display_text_nombre)
+							if (pickedProducto == item.nombre)
 							{
-                                txtPrecio.Text = item.precio_venta.ToString("0.##");
-                                txtStock.Text = item.stock.ToString();
-                                txtStockValorado.Text = item.stock_valorado.ToString();
-                                txtPromedio.Text = item.promedio.ToString();
-                                idProductoSelected = item.id_producto;
+								txtPrecio.Text = item.precio_venta.ToString("0.##");
+								txtStock.Text = item.stock.ToString();
+								txtStockValorado.Text = item.stock_valorado.ToString();
+								txtPromedio.Text = item.promedio.ToString();
+								idProductoSelected = item.id_producto;
 							}
 						}
 					}
-                    catch (Exception err)
-                    {
-                        await DisplayAlert("ERROR", err.ToString(), "OK");
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                await DisplayAlert("ERROR", err.ToString(), "OK");
-            }
-        }
+					catch (Exception err)
+					{
+						await DisplayAlert("ERROR", err.ToString(), "OK");
+					}
+				}
+			}
+			catch (Exception err)
+			{
+				await DisplayAlert("ERROR", err.ToString(), "OK");
+			}
+		}
         decimal precioSelected = 0;
         int cantidaSelected = 0;
         decimal descuentoSelected = 0;
@@ -244,10 +211,10 @@ namespace DistribuidoraFabio.Venta
         decimal stockSelected = 0;
         decimal stockValoradoSelected = 0;
         decimal promedioSelected = 0;
-		private async void txtDescuento_Completed(object sender, EventArgs e)
-		{
+        private async void txtDescuento_Completed(object sender, EventArgs e)
+        {
             try
-			{
+            {
                 precioSelected = Convert.ToDecimal(txtPrecio.Text);
                 cantidaSelected = Convert.ToInt32(txtCantidad.Text);
                 descuentoSelected = Convert.ToDecimal(txtDescuento.Text);
@@ -258,51 +225,70 @@ namespace DistribuidoraFabio.Venta
                 subTotalSelected = precioFinalSelected * cantidaSelected;
                 txtSubTotal.Text = subTotalSelected.ToString();
             }
-            catch(Exception err)
-			{
+            catch (Exception err)
+            {
                 await DisplayAlert("ERROR", err.ToString(), "OK");
-			}
-		}
-		private async void agregarAlista_Clicked(object sender, EventArgs e)
-		{
-            try
-			{
-                App._detalleVData.Add(new DetalleVenta_previo
-                {
-                    cantidad = cantidaSelected,
-                    id_producto = idProductoSelected,
-                    nombre_producto = pickedTP + " " + pickedProducto,
-                    precio_producto = precioSelected,
-                    descuento = descuentoSelected,
-                    sub_total = subTotalSelected,
-                    stock = stockSelected,
-                    stock_valorado = stockValoradoSelected,
-                    promedio = promedioSelected
-                }); 
-                picker_Producto.SelectedIndex = -1;
-                picker_Producto.Items.Clear();
-                picker_TP.SelectedIndex = -1;
-                txtPrecio.Text = string.Empty;
-                txtCantidad.Text = string.Empty;
-                txtDescuento.Text = string.Empty;
-                txtSubTotal.Text = string.Empty;
-                txtStock.Text = string.Empty;
-                txtStockValorado.Text = string.Empty;
-                txtPromedio.Text = string.Empty;
-                MontoTotal = 0;
-                foreach(var item in App._detalleVData)
-				{
-                    MontoTotal = MontoTotal + item.sub_total;
-				}
-                totalVentaEntry.Text = MontoTotal.ToString();
-			}
-            catch(Exception err)
-			{
-                await DisplayAlert("Erro", err.ToString(), "OK");
             }
-		}
-		private async void listProductos_ItemTapped(object sender, ItemTappedEventArgs e)
-		{
+        }
+        private async void txtCantidad_Completed(object sender, EventArgs e)
+        {
+            try
+            {
+                precioSelected = Convert.ToDecimal(txtPrecio.Text);
+                cantidaSelected = Convert.ToInt32(txtCantidad.Text);
+                descuentoSelected = Convert.ToDecimal(txtDescuento.Text);
+                stockSelected = Convert.ToDecimal(txtStock.Text);
+                stockValoradoSelected = Convert.ToDecimal(txtStockValorado.Text);
+                promedioSelected = Convert.ToDecimal(txtPromedio.Text);
+                precioFinalSelected = precioSelected - descuentoSelected;
+                subTotalSelected = precioFinalSelected * cantidaSelected;
+                txtSubTotal.Text = subTotalSelected.ToString();
+            }
+            catch (Exception err)
+            {
+                await DisplayAlert("ERROR", err.ToString(), "OK");
+            }
+        }
+        private async void agregarAlista_Clicked(object sender, EventArgs e)
+        {
+            //         try
+            //{
+            //             App._detalleVData.Add(new DetalleVenta_previo
+            //             {
+            //                 cantidad = cantidaSelected,
+            //                 id_producto = idProductoSelected,
+            //                 nombre_producto = pickedTP + " " + pickedProducto,
+            //                 precio_producto = precioSelected,
+            //                 descuento = descuentoSelected,
+            //                 sub_total = subTotalSelected,
+            //                 stock = stockSelected,
+            //                 stock_valorado = stockValoradoSelected,
+            //                 promedio = promedioSelected
+            //             }); 
+            //             picker_Producto.SelectedIndex = -1;
+            //             picker_Producto.Items.Clear();
+            //             picker_TP.SelectedIndex = -1;
+            //             txtPrecio.Text = string.Empty;
+            //             txtCantidad.Text = string.Empty;
+            //             txtDescuento.Text = string.Empty;
+            //             txtSubTotal.Text = string.Empty;
+            //             txtStock.Text = string.Empty;
+            //             txtStockValorado.Text = string.Empty;
+            //             txtPromedio.Text = string.Empty;
+            //             MontoTotal = 0;
+            //             foreach(var item in App._detalleVData)
+            //	{
+            //                 MontoTotal = MontoTotal + item.sub_total;
+            //	}
+            //             totalVentaEntry.Text = MontoTotal.ToString();
+            //}
+            //         catch(Exception err)
+            //{
+            //             await DisplayAlert("Erro", err.ToString(), "OK");
+            //         }
+        }
+        private async void listProductos_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
             var action = await DisplayActionSheet("BORRAR PRODUCTO DE LA LISTA?", null, null, "SI", "NO");
             switch (action)
             {
@@ -422,9 +408,9 @@ namespace DistribuidoraFabio.Venta
                 }
             }
             else
-			{
+            {
                 await DisplayAlert("ERROR", "Agregue un producto a la lista", "OK");
-			}
+            }
         }
-    }
+	}
 }

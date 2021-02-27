@@ -17,7 +17,6 @@ namespace DistribuidoraFabio.Producto
 	public partial class AgregarProducto : ContentPage
 	{
         List<Tipo_producto> TP_prods = new List<Tipo_producto>();
-        List<Sub_producto> SP_prods = new List<Sub_producto>();
         public AgregarProducto()
 		{
 			InitializeComponent();
@@ -35,15 +34,6 @@ namespace DistribuidoraFabio.Producto
                 TP_prods.Add(item);
 			}
             tpPicker.ItemsSource = TP_prods;
-
-            var response1 = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/subproductos/listaSubproducto.php");
-            var subproducto = JsonConvert.DeserializeObject<List<Models.Sub_producto>>(response1);
-
-            foreach(var item in subproducto)
-			{
-                SP_prods.Add(item);
-			}
-            spPicker.ItemsSource = SP_prods;
         }
         private string pickTP;
         private int pickedID_TP;
@@ -71,32 +61,6 @@ namespace DistribuidoraFabio.Producto
                 await DisplayAlert("ERROR", err.ToString(), "OK");
 			}
         }
-        private string pickSP;
-        private int pickedID_SP;
-        private async void SpPicker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-
-            if (selectedIndex != -1)
-            {
-                pickSP = picker.Items[selectedIndex];
-            }
-            try
-			{
-                foreach(var item in SP_prods)
-				{
-                    if(pickSP == item.nombre_sub_producto)
-					{
-                        pickedID_SP = item.id_subproducto;
-					}
-				}
-			}
-            catch(Exception err)
-			{
-                await DisplayAlert("ERROR", err.ToString(), "OK");
-			}
-        }
         private async void BtnGuardarPr_Clicked(object sender, EventArgs e)
         {
             try
@@ -105,7 +69,6 @@ namespace DistribuidoraFabio.Producto
                 {
                     nombre = nombrePEntry.Text,
                     id_tipo_producto = pickedID_TP,
-                    id_sub_producto = pickedID_SP,
                     stock = Convert.ToDecimal(stockProductoEntry.Text),
                     stock_valorado = Convert.ToDecimal(stockValoradoProductoEntry.Text),
                     promedio = Convert.ToDecimal(promedioProductoEntry.Text),

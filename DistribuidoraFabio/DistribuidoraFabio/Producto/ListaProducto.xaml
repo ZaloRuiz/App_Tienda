@@ -5,36 +5,14 @@
              Visual="Material"
              BackgroundColor="#324A51">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Agregar" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Agregar" Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Tipos de producto" Clicked="ToolbarItemTP_Clicked"/>
     </ContentPage.ToolbarItems>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <StackLayout Grid.Column="0">
-            <ListView x:Name="listaProd" ItemTapped="OnItemSelected" SeparatorColor="#95B0B7">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding nombre}" TextColor="#95B0B7" Detail="{Binding id_sub_producto}" DetailColor="#4DCCE8"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
-        <StackLayout x:Name="stkTipoProducto" IsVisible="false" Orientation="Horizontal" Grid.Row="0" HorizontalOptions="End" VerticalOptions="End" Padding="0 ,0 ,10 ,130">
-            <Label Text="Agregar Tipo de producto" TextColor="Black" VerticalOptions="Center" Margin="0,0,20,22"/>
-            <Button x:Name="btnRedirect_TP" Text=" + " BorderColor="#2b3c3c" BorderWidth="1" FontAttributes="Bold" BackgroundColor="Red" BorderRadius="20" 
-                TextColor="White" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,22" VerticalOptions="End"
-                    Clicked="btnRedirect_TP_Clicked"/>
-        </StackLayout>
-        <StackLayout x:Name="stkSubProducto" IsVisible="false" Orientation="Horizontal" Grid.Row="0" HorizontalOptions="End" VerticalOptions="End" Padding="0 ,0 ,10 ,80">
-            <Label Text="Agregar Sub producto" TextColor="Black" VerticalOptions="Center" Margin="0,0,20,22"/>
-            <Button x:Name="btnRedirect_SP" Text=" + " BorderColor="#2b3c3c" BorderWidth="1" FontAttributes="Bold" BackgroundColor="DarkViolet" BorderRadius="20" 
-                TextColor="White" HorizontalOptions="End" WidthRequest="40" HeightRequest="40" Margin="0,0,20,22" VerticalOptions="End"
-                    Clicked="btnRedirect_SP_Clicked"/>
-        </StackLayout>
-        <Button x:Name="btnFlotante" Grid.Row="0" Text=" + " BorderColor="#2b3c3c" BorderWidth="1" FontAttributes="Bold" BackgroundColor="Green" BorderRadius="30" 
-                TextColor="White" HorizontalOptions="End" WidthRequest="60" HeightRequest="60" Margin="0,0,20,22" VerticalOptions="End"
-                Clicked="btnFlotante_Clicked"/>
-    </Grid>
+    <ListView x:Name="listaProd" ItemTapped="OnItemSelected" SeparatorColor="#95B0B7">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding nombre}" TextColor="#95B0B7" Detail="{Binding nombre_tipo_producto}" DetailColor="#4DCCE8"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>

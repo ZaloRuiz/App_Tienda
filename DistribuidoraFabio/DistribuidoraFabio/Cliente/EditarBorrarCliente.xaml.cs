@@ -16,77 +16,106 @@ namespace DistribuidoraFabio.Cliente
 	public partial class EditarBorrarCliente : ContentPage
 	{
         private int IdCliente = 0;
-        public EditarBorrarCliente(int id_cliente, string nombre, string ubicacion_latitud, string ubicacion_longitud, int telefono, int nit)
+        public EditarBorrarCliente(int id_cliente, int codigo_c, string nombre, string ubicacion_latitud, string ubicacion_longitud, int telefono, string razon_social, int nit)
 		{
 			InitializeComponent();
             IdCliente = id_cliente;
 			idClienteEntry.Text = id_cliente.ToString();
+            codigoEntry.Text = codigo_c.ToString();
 			nombreClienteEntry.Text = nombre;
 			ubicacionLatitudEntry.Text = ubicacion_latitud;
 			ubicacionLongitudEntry.Text = ubicacion_longitud;
 			telefonoClienteEntry.Text = telefono.ToString();
 			nitClienteEntry.Text = nit.ToString();
+            razonEntry.Text = razon_social;
 		}
         private async void BtnEditarCliente_Clicked(object sender, EventArgs e)
         {
-            Models.Cliente cliente = new Models.Cliente()
+            var action = await DisplayActionSheet("GUARDAR CAMBIOS?", null, null, "SI", "NO");
+            switch (action)
             {
-                id_cliente = Convert.ToInt32(idClienteEntry.Text),
-                nombre = nombreClienteEntry.Text,
-                ubicacion_latitud = ubicacionLatitudEntry.Text,
-                ubicacion_longitud = ubicacionLongitudEntry.Text,
-                telefono = Convert.ToInt32(telefonoClienteEntry.Text),
-                nit = Convert.ToInt32(nitClienteEntry.Text)
-            };
+                case "SI":
+                    try
+                    {
+                        Models.Cliente cliente = new Models.Cliente()
+                        {
+                            id_cliente = Convert.ToInt32(idClienteEntry.Text),
+                            codigo_c = Convert.ToInt32(codigoEntry.Text),
+                            nombre = nombreClienteEntry.Text,
+                            ubicacion_latitud = ubicacionLatitudEntry.Text,
+                            ubicacion_longitud = ubicacionLongitudEntry.Text,
+                            telefono = Convert.ToInt32(telefonoClienteEntry.Text),
+                            razon_social = razonEntry.Text,
+                            nit = Convert.ToInt32(nitClienteEntry.Text)
+                        };
 
-            var json = JsonConvert.SerializeObject(cliente);
+                        var json = JsonConvert.SerializeObject(cliente);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpClient client = new HttpClient();
+                        HttpClient client = new HttpClient();
 
-            var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/editarCliente.php", content);
+                        var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/editarCliente.php", content);
 
-            if (result.StatusCode == HttpStatusCode.OK)
-            {
-                await DisplayAlert("EDITADO", "Se edito correctamente", "OK");
-                await Navigation.PopAsync();
-            }
-            else
-            {
-                await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
-                await Navigation.PopAsync();
+                        if (result.StatusCode == HttpStatusCode.OK)
+                        {
+                            await DisplayAlert("EDITADO", "Se edito correctamente", "OK");
+                            await Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
+                            await Navigation.PopAsync();
+                        }
+                    }
+                    catch(Exception err)
+					{
+                        await DisplayAlert("ERROR", err.ToString(), "OK");
+					}
+                    break;
+                case "NO":
+                    break;
             }
         }
         private async void BtnBorrarCliente_Clicked(object sender, EventArgs e)
         {
-            Models.Cliente cliente = new Models.Cliente()
+            var action = await DisplayActionSheet("BORRAR CLIENTE?", null, null, "SI", "NO");
+            switch (action)
             {
-                id_cliente = Convert.ToInt32(idClienteEntry.Text),
-                nombre = nombreClienteEntry.Text,
-                ubicacion_latitud = ubicacionLatitudEntry.Text,
-                ubicacion_longitud = ubicacionLongitudEntry.Text,
-                telefono = Convert.ToInt32(telefonoClienteEntry.Text),
-                nit = Convert.ToInt32(nitClienteEntry.Text)
-            };
+                case "SI":
+                    try
+                    {
+                        Models.Cliente cliente = new Models.Cliente()
+                        {
+                            id_cliente = Convert.ToInt32(idClienteEntry.Text),
+                        };
 
-            var json = JsonConvert.SerializeObject(cliente);
+                        var json = JsonConvert.SerializeObject(cliente);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpClient client = new HttpClient();
+                        HttpClient client = new HttpClient();
 
-            var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/borrarCliente.php", content);
+                        var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/borrarCliente.php", content);
 
-            if (result.StatusCode == HttpStatusCode.OK)
-            {
-                await DisplayAlert("ELIMINAR", "Se elimino correctamente", "OK");
-                await Navigation.PopAsync();
-            }
-            else
-            {
-                await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
-                await Navigation.PopAsync();
+                        if (result.StatusCode == HttpStatusCode.OK)
+                        {
+                            await DisplayAlert("ELIMINAR", "Se elimino correctamente", "OK");
+                            await Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
+                            await Navigation.PopAsync();
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        await DisplayAlert("ERROR", err.ToString(), "OK");
+                    }
+                    break;
+                case "NO":
+                    break;
             }
         }
         private async void BtnVerUbicacion_Clicked(object sender, EventArgs e)

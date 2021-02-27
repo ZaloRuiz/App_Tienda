@@ -34,16 +34,23 @@ namespace DistribuidoraFabio
 				MenuItems = new ObservableCollection<MenuMasterMenuItem>(new[]
 				{
 					new MenuMasterMenuItem { Id = 0, Title = "Inicio", TargetType = typeof(MenuDetail), icon="icon_venta.png" },
-					new MenuMasterMenuItem { Id = 1, Title = "Inventario", TargetType = typeof(Inventario.InventarioGeneral), icon="icon_venta.png" },
-					new MenuMasterMenuItem { Id = 2, Title = "Ventas", TargetType = typeof(Venta.ListaVenta), icon="icon_compra.png" },
-					new MenuMasterMenuItem { Id = 3, Title = "Compras", TargetType = typeof(Compra.ListaCompra), icon="icon_producto.png" },
-					new MenuMasterMenuItem { Id = 4, Title = "Producto", TargetType = typeof(Producto.ListaProducto), icon="icon_cliente.png" },
-					new MenuMasterMenuItem { Id = 5, Title = "Cliente", TargetType = typeof(Cliente.ListaCliente), icon="icon_cliente.png"},
-					new MenuMasterMenuItem { Id = 6, Title = "Proveedor", TargetType = typeof(Proveedor.ListaProveedor), icon="icon_proveedor.png" },
+					new MenuMasterMenuItem { Id = 1, Title = "Pedidos", TargetType = typeof(Venta.ListaPedidos), icon="icon_compra.png" },
+					new MenuMasterMenuItem { Id = 2, Title = "Cliente", TargetType = typeof(Cliente.ListaCliente), icon="icon_cliente.png"},
+					new MenuMasterMenuItem { Id = 3, Title = "Producto", TargetType = typeof(Producto.ListaProducto), icon="icon_cliente.png" },
+					new MenuMasterMenuItem { Id = 4, Title = "Rutas", TargetType = typeof(MenuDetail), icon="fina.png" },
+					new MenuMasterMenuItem { Id = 5, Title = "Reportes", TargetType = typeof(MenuDetail), icon="fina.png" },
+					new MenuMasterMenuItem { Id = 6, Title = "Inventario", TargetType = typeof(Inventario.InventarioGeneral), icon="icon_venta.png" },
 					new MenuMasterMenuItem { Id = 7, Title = "Vendedor", TargetType = typeof(Vendedor.ListaVendedor), icon="icon_vendedor.png" },
-					new MenuMasterMenuItem { Id = 8, Title = "Finanzas", TargetType = typeof(MenuDetail), icon="fina.png" },
-					new MenuMasterMenuItem { Id = 9, Title = "Agenda", TargetType = typeof(MenuDetail), icon="agendaicono.png" },
-					new MenuMasterMenuItem { Id = 10, Title = "Scaner", TargetType = typeof(MenuDetail), icon="icon_app.png" },
+					//new MenuMasterMenuItem { Id = 1, Title = "Inventario", TargetType = typeof(Inventario.InventarioGeneral), icon="icon_venta.png" },
+					//new MenuMasterMenuItem { Id = 2, Title = "Ventas", TargetType = typeof(Venta.ListaVenta), icon="icon_compra.png" },
+					//new MenuMasterMenuItem { Id = 3, Title = "Compras", TargetType = typeof(Compra.ListaCompra), icon="icon_producto.png" },
+					//new MenuMasterMenuItem { Id = 4, Title = "Producto", TargetType = typeof(Producto.ListaProducto), icon="icon_cliente.png" },
+					//new MenuMasterMenuItem { Id = 5, Title = "Cliente", TargetType = typeof(Cliente.ListaCliente), icon="icon_cliente.png"},
+					//new MenuMasterMenuItem { Id = 6, Title = "Proveedor", TargetType = typeof(Proveedor.ListaProveedor), icon="icon_proveedor.png" },
+					//new MenuMasterMenuItem { Id = 7, Title = "Vendedor", TargetType = typeof(Vendedor.ListaVendedor), icon="icon_vendedor.png" },
+					//new MenuMasterMenuItem { Id = 8, Title = "Finanzas", TargetType = typeof(MenuDetail), icon="fina.png" },
+					//new MenuMasterMenuItem { Id = 9, Title = "Agenda", TargetType = typeof(MenuDetail), icon="agendaicono.png" },
+					//new MenuMasterMenuItem { Id = 10, Title = "Scaner", TargetType = typeof(MenuDetail), icon="icon_app.png" },
 				});
 			}
 

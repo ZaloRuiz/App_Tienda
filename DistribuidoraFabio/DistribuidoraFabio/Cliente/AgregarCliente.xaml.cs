@@ -22,32 +22,40 @@ namespace DistribuidoraFabio.Cliente
 		}
         private async void BtnGuardarCliente_Clicked(object sender, EventArgs e)
         {
-			Models.Cliente cliente = new Models.Cliente()
+			try
 			{
-				nombre = nombreEntry.Text,
-				ubicacion_latitud = ubicacionLatitudEntry.Text,
-				ubicacion_longitud = ubicacionLongitudEntry.Text,
-				telefono = Convert.ToInt32(telefonoEntry.Text),
-				nit = Convert.ToInt32(nitEntry.Text)
-			};
+				Models.Cliente cliente = new Models.Cliente()
+				{
+					nombre = nombreEntry.Text,
+					ubicacion_latitud = ubicacionLatitudEntry.Text,
+					ubicacion_longitud = ubicacionLongitudEntry.Text,
+					telefono = Convert.ToInt32(telefonoEntry.Text),
+					razon_social = razEntry.Text,
+					nit = Convert.ToInt32(nitEntry.Text)
+				};
 
-			var json = JsonConvert.SerializeObject(cliente);
+				var json = JsonConvert.SerializeObject(cliente);
 
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			HttpClient client = new HttpClient();
+				HttpClient client = new HttpClient();
 
-			var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/agregarCliente.php", content);
+				var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/clientes/agregarCliente.php", content);
 
-			if (result.StatusCode == HttpStatusCode.OK)
-			{
-				await DisplayAlert("GUARDADO", "Se agrego correctamente", "OK");
-				await Navigation.PopAsync();
+				if (result.StatusCode == HttpStatusCode.OK)
+				{
+					await DisplayAlert("GUARDADO", "Se agrego correctamente", "OK");
+					await Navigation.PopAsync();
+				}
+				else
+				{
+					await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
+					await Navigation.PopAsync();
+				}
 			}
-			else
+			catch(Exception err)
 			{
-				await DisplayAlert("ERROR", result.StatusCode.ToString(), "OK");
-				await Navigation.PopAsync();
+				await DisplayAlert("ERROR", err.ToString(), "OK");
 			}
 		}
 

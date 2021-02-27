@@ -84,7 +84,6 @@ namespace DistribuidoraFabio.ViewModels
 				{
 					id_producto = item.id_producto,
 					nombre = item.nombre,
-					nombre_sub_producto = item.nombre_sub_producto,
 					nombre_tipo_producto = item.nombre_tipo_producto,
 					precio_venta = item.precio_venta,
 					producto_alerta = item.producto_alerta,

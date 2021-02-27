@@ -8,43 +8,44 @@
          <ScrollView>
             <StackLayout x:Name="stkVenta" Padding="10" Visual="Material">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Visual="Material">
-                        <Picker x:Name="clientePicker" Title="Cliente"
-                            ItemsSource="{Binding nombre}"
-                            ItemDisplayBinding="{Binding nombre}"
-                            SelectedItem="{Binding nombre}"
-                            SelectedIndexChanged="ClientePicker_SelectedIndexChanged_1"
-                                HorizontalOptions="FillAndExpand"/>
-                        <Picker x:Name="vendedorPicker" Title="Vendedor"
-                            ItemsSource="{Binding nombre}"
-                            ItemDisplayBinding="{Binding nombre}"
-                            SelectedItem="{Binding nombre}"
-                            SelectedIndexChanged="VendedorPicker_SelectedIndexChanged"
-                                HorizontalOptions="FillAndExpand"/>
-                        <Entry x:Name="numero_facturaVentaEntry" Placeholder="Numero de factura" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
-                        <DatePicker x:Name="fechaVentaEntry" MaximumDate="12/31/2030" MinimumDate="01/01/2020" HorizontalOptions="FillAndExpand"/>
-                    </StackLayout>
-                    <StackLayout x:Name="stkProductos" Padding="0" Margin="0, 15, 0, 15">
+                    <Picker x:Name="clientePicker" Title="Cliente" 
+                        ItemsSource="{Binding nombre}"
+                        ItemDisplayBinding="{Binding nombre}"
+                        SelectedItem="{Binding nombre}"
+                        SelectedIndexChanged="ClientePicker_SelectedIndexChanged_1"
+                            HorizontalOptions="FillAndExpand"/>
+                    <Picker x:Name="vendedorPicker" Title="Vendedor"
+                        ItemsSource="{Binding nombre}"
+                        ItemDisplayBinding="{Binding nombre}"
+                        SelectedItem="{Binding nombre}"
+                        SelectedIndexChanged="VendedorPicker_SelectedIndexChanged"
+                            HorizontalOptions="FillAndExpand"/>
+                    <Entry x:Name="numero_facturaVentaEntry" Placeholder="Numero de factura" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                    <DatePicker x:Name="fechaVentaEntry" MaximumDate="12/31/2030" Format="dd/MM/yyyy" MinimumDate="01/01/2010" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout x:Name="stkProductos" Padding="0" Margin="0, 15, 0, 15">
                     <Label HorizontalOptions="Start" Text="Agregar Producto" TextColor="#95B0B7" FontSize="14" Visual="Material"/>
                     <Frame HasShadow="True" CornerRadius="10" Padding="0" Margin="0" BorderColor="DarkGray" Visual="Material">
                         <StackLayout Visual="Material">
                             <StackLayout Orientation="Horizontal" Visual="Material">
-                                    <Picker x:Name="picker_TP" Title="Tipo producto" HorizontalOptions="FillAndExpand" VerticalOptions="Center" 
-                                            SelectedIndexChanged="picker_TP_SelectedIndexChanged"
-                                            ItemsSource="{Binding nombre_tipo_producto}" ItemDisplayBinding="{Binding nombre_tipo_producto}" 
-                                            SelectedItem="{Binding nombre_tipo_producto}"/>
+                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                     <Picker x:Name="picker_Producto" Title="Producto" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                                             SelectedIndexChanged="picker_Producto_SelectedIndexChanged"
-                                            ItemsSource="{Binding display_text_nombre}" ItemDisplayBinding="{Binding display_text_nombre}" 
-                                            SelectedItem="{Binding display_text_nombre}"/>
+                                            ItemsSource="{Binding nombre}" ItemDisplayBinding="{Binding nombre}" 
+                                            SelectedItem="{Binding nombre}"/>
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                    <Entry x:Name="txtStock" TextColor="Black" Placeholder="Stock" VerticalOptions="Center" HorizontalOptions="FillAndExpand" IsReadOnly="True"/>
                                     <Entry x:Name="txtPrecio" Placeholder="Precio" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
-                                           IsReadOnly="True"/>
-                                <Entry x:Name="txtStock" TextColor="Black" Placeholder="Stock" VerticalOptions="Center" HorizontalOptions="FillAndExpand" IsReadOnly="True"/>
+                                        IsReadOnly="True"/>
+                                    <Entry x:Name="txtDescuento" Placeholder="Descuento" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                                        Keyboard="Numeric" Completed="txtDescuento_Completed"/>
+                                </StackLayout>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal" Visual="Material">
-                                <Entry x:Name="txtCantidad" Placeholder="Cantidad" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
-                                           Keyboard="Numeric"/>
-                                <Entry x:Name="txtDescuento" Placeholder="Descuento" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
-                                        Keyboard="Numeric" Completed="txtDescuento_Completed"/>
+                                <Entry x:Name="txtCantidad" Placeholder="Cantidad" HorizontalOptions="FillAndExpand" VerticalOptions="Center" 
+                                       Keyboard="Numeric" Completed="txtCantidad_Completed"/>
+                                <Entry x:Name="txtEnvases" Placeholder="Envases" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Keyboard="Numeric"/>
                                 <Entry x:Name="txtSubTotal" Placeholder="Sub total" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                                 <Label x:Name="txtStockValorado" IsVisible="false"/>
                                 <Label x:Name="txtPromedio" IsVisible="false"/>

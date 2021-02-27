@@ -35,11 +35,8 @@ namespace DistribuidoraFabio.Cliente
         private async void OnItemSelected(object sender, ItemTappedEventArgs e)
         {
             var detalles = e.Item as Models.Cliente;
-            await Navigation.PushAsync(new EditarBorrarCliente(detalles.id_cliente, detalles.nombre, detalles.ubicacion_latitud, detalles.ubicacion_longitud, detalles.telefono, detalles.nit));
-        }
-        private void ToolbarItemMap_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new MapaCliente());
+            await Navigation.PushAsync(new EditarBorrarCliente(detalles.id_cliente, detalles.codigo_c, detalles.nombre, detalles.ubicacion_latitud, detalles.ubicacion_longitud, 
+                detalles.telefono, detalles.razon_social, detalles.nit));
         }
     }
 }

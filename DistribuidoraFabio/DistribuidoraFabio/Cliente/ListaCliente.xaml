@@ -6,13 +6,32 @@
              BackgroundColor="#324A51">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Agregar" Clicked="ToolbarItem_Clicked"/>
-        <ToolbarItem Text="RUTA" Clicked="ToolbarItemMap_Clicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView x:Name="listaCliente" ItemTapped="OnItemSelected" SeparatorColor="#95B0B7">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding nombre}" TextColor="#95B0B7" Detail="{Binding telefono}" DetailColor="#4DCCE8"/>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" FontSize="Medium" TextColor="#95B0B7" LineBreakMode="TailTruncation">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding nombre}"/>
+                                        <Span Text="  -  "/>
+                                        <Span Text="{Binding codigo_c}"/>
+                                        <Span Text="   -   Telefono: "/>
+                                        <Span Text="{Binding telefono}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
