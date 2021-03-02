@@ -139,14 +139,6 @@ namespace DistribuidoraFabio.Venta
 				entfactura.HorizontalOptions = LayoutOptions.FillAndExpand;
 				stk1.Children.Add(entfactura);
 
-				Button btnComp = new Button();
-				btnComp.Text = "Completar pedido";
-				btnComp.BackgroundColor = Color.Green;
-				btnComp.TextColor = Color.White;
-				btnComp.CornerRadius = 5;
-				btnComp.HorizontalOptions = LayoutOptions.End;
-				stk1.Children.Add(btnComp);
-
 				StackLayout stk2 = new StackLayout();
 				stk2.Orientation = StackOrientation.Horizontal;
 				stkPrimero.Children.Add(stk2);
