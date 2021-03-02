@@ -22,7 +22,7 @@
                             <Label Grid.Row="0" Grid.Column="0" FontSize="Medium" TextColor="#95B0B7" LineBreakMode="TailTruncation">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding nombre}"/>
+                                        <Span Text="{Binding nombre_cliente}"/>
                                         <Span Text="  -  "/>
                                         <Span Text="{Binding codigo_c}"/>
                                         <Span Text="   -   Telefono: "/>

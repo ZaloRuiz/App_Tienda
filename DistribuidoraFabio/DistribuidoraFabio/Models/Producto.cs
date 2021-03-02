@@ -12,7 +12,7 @@ namespace DistribuidoraFabio.Models
     public class Producto
     {        
         public int id_producto { get; set; }
-        public string nombre { get; set; }
+        public string nombre_producto { get; set; }
         public int id_tipo_producto { get; set; }
         public decimal stock { get; set; }
         public decimal stock_valorado { get; set; }

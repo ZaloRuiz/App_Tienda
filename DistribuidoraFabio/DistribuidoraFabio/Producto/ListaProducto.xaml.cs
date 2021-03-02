@@ -39,7 +39,7 @@ namespace DistribuidoraFabio.Producto
 		private async void OnItemSelected(object sender, ItemTappedEventArgs e)
 		{
 			var detalles = e.Item as Models.ProductoNombre;
-			await Navigation.PushAsync(new EditarBorrarProducto(detalles.id_producto, detalles.nombre, detalles.nombre_tipo_producto, detalles.stock,
+			await Navigation.PushAsync(new EditarBorrarProducto(detalles.id_producto, detalles.nombre_producto, detalles.nombre_tipo_producto, detalles.stock,
 				detalles.stock_valorado, detalles.promedio, detalles.precio_venta, detalles.producto_alerta));
 		}
 	}

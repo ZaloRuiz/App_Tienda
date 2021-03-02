@@ -67,7 +67,7 @@ namespace DistribuidoraFabio.Producto
             {
                 Models.Producto producto = new Models.Producto()
                 {
-                    nombre = nombrePEntry.Text,
+                    nombre_producto = nombrePEntry.Text,
                     id_tipo_producto = pickedID_TP,
                     stock = Convert.ToDecimal(stockProductoEntry.Text),
                     stock_valorado = Convert.ToDecimal(stockValoradoProductoEntry.Text),

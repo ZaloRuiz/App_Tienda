@@ -9,6 +9,7 @@
             <StackLayout Padding="20">
                 <Entry x:Name="nombreEntry" HorizontalOptions="FillAndExpand" TextColor="Black" Placeholder="Nombre"/>
                 <Entry x:Name="telefonoEntry" HorizontalOptions="FillAndExpand" TextColor="Black" Placeholder="Telefono" Keyboard="Numeric"/>
+                <Entry x:Name="direccionEntry" HorizontalOptions="FillAndExpand" TextColor="Black" Placeholder="Direccion"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Entry x:Name="ubconfirmacionEntry" WidthRequest="300" Placeholder="Ubicacion" TextColor="Black" HorizontalOptions="FillAndExpand"/>
                     <Entry x:Name="ubicacionLatitudEntry" IsVisible="False"/>

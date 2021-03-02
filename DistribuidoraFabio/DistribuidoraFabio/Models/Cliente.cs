@@ -9,7 +9,8 @@ namespace DistribuidoraFabio.Models
     {        
         public int id_cliente { get; set; }
         public int codigo_c { get; set; }
-        public string nombre { get; set; }
+        public string nombre_cliente { get; set; }
+	    public string direccion_cliente { get; set; }
         public string ubicacion_latitud { get; set; }
         public string ubicacion_longitud { get; set; }
         public int telefono { get; set; }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,57 +17,61 @@ using Xamarin.Forms.Xaml;
 namespace DistribuidoraFabio.Venta
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MostrarVenta : ContentPage
+	public partial class MostrarVentaPendiente : ContentPage
 	{
 		ObservableCollection<DetalleVentaNombre> detalleVenta_lista = new ObservableCollection<DetalleVentaNombre>();
 		public ObservableCollection<DetalleVentaNombre> DetallesVentas { get { return detalleVenta_lista; } }
-        private int facturacomp = 0;
+		private int facturacomp = 0;
 		private int _id_venta = 0;
 		private DateTime _fecha;
 		private int _numero_factura = 0;
 		private int _cliente;
-        private string _nombreCliente = "NombreCliente";
+		private string _nombreCliente = "NombreCliente";
 		private int _vendedor;
-        private string _nombreVendedor = "NombreVendedor";
+		private string _nombreVendedor = "NombreVendedor";
 		private string _tipo_venta;
-        private decimal _total = 0;
-        private string _estado;
-        private DateTime _fecha_entrega;
-        private string _observacion;
-        public MostrarVenta(int id_venta, DateTime fecha, int numero_factura, int id_cliente, int id_vendedor, string tipo_venta, 
+		private decimal _total = 0;
+		private string _estado;
+		private DateTime _fecha_entrega;
+		private string _observacion;
+		private decimal _saldo;
+		private DateTime _fechaHoy;
+		public MostrarVentaPendiente(int id_venta, DateTime fecha, int numero_factura, int id_cliente, int id_vendedor, string tipo_venta,
 			decimal saldo, decimal total, DateTime fecha_entrega, string estado, string observacion)
 		{
-            string BusyReason = "Cargando...";
-            PopupNavigation.Instance.PushAsync(new BusyPopup(BusyReason));
-            InitializeComponent();
+			InitializeComponent();
+			string BusyReason = "Cargando...";
+			PopupNavigation.Instance.PushAsync(new BusyPopup(BusyReason));
 			facturacomp = numero_factura;
-            _id_venta = id_venta;
-            _fecha = fecha;
-            _numero_factura = numero_factura;
-            _cliente = id_cliente;
-            _vendedor = id_vendedor;
+			_id_venta = id_venta;
+			_fecha = fecha;
+			_numero_factura = numero_factura;
+			_cliente = id_cliente;
+			_vendedor = id_vendedor;
 			_tipo_venta = tipo_venta;
-            _total = total;
-            _estado = estado;
-            _fecha_entrega = fecha_entrega;
-            _observacion = observacion;
-            if(_tipo_venta == "Credito")
+			_total = total;
+			_estado = estado;
+			_fecha_entrega = fecha_entrega;
+			_observacion = observacion;
+			_fechaHoy = DateTime.Now;
+			_saldo = saldo;
+			if (_tipo_venta == "Credito")
 			{
-                _tipo_venta = tipo_venta + " Saldo: " + saldo.ToString("#.##") + " Bs.";
-            }
-            else if(_tipo_venta == "Contado")
+				_tipo_venta = tipo_venta + " Saldo: " + saldo.ToString("#.##") + " Bs.";
+			}
+			else if (_tipo_venta == "Contado")
 			{
-                _tipo_venta = tipo_venta;
-            }
+				_tipo_venta = tipo_venta;
+			}
 			GetDataCliente();
 			GetDataVendedor();
 			MostraDatosVentaInicial();
 			MostrarDetalleVenta();
 			MostraDatosVentaFinal();
 			PopupNavigation.Instance.PopAsync();
-        }
-        private async void GetDataCliente()
-        {
+		}
+		private async void GetDataCliente()
+		{
 			try
 			{
 				HttpClient client = new HttpClient();
@@ -84,42 +89,42 @@ namespace DistribuidoraFabio.Venta
 					}
 				}
 			}
-			catch(Exception err)
+			catch (Exception err)
 			{
 				await DisplayAlert("ERROR", err.ToString(), "OK");
 			}
-        }
-        private async void GetDataVendedor()
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-                var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/vendedores/listaVendedores.php");
-                var vendedores = JsonConvert.DeserializeObject<List<Vendedores>>(response).ToList();
-                foreach (var item in vendedores)
-                {
-                    if(item.id_vendedor == _vendedor)
+		}
+		private async void GetDataVendedor()
+		{
+			try
+			{
+				HttpClient client = new HttpClient();
+				var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/vendedores/listaVendedores.php");
+				var vendedores = JsonConvert.DeserializeObject<List<Vendedores>>(response).ToList();
+				foreach (var item in vendedores)
+				{
+					if (item.id_vendedor == _vendedor)
 					{
-                        _nombreVendedor = item.nombre;
+						_nombreVendedor = item.nombre;
 					}
 					else
 					{
 						_nombreVendedor = item.id_vendedor.ToString();
 					}
-                }
-            }
-            catch (Exception error)
-            {
-                await DisplayAlert("Erro", error.ToString(), "OK");
-            }
-        }
+				}
+			}
+			catch (Exception error)
+			{
+				await DisplayAlert("Erro", error.ToString(), "OK");
+			}
+		}
 		private async void MostraDatosVentaInicial()
 		{
 			try
 			{
 				StackLayout stk1 = new StackLayout();
 				stk1.Orientation = StackOrientation.Horizontal;
-				stkDatos.Children.Add(stk1);
+				stkPrimero.Children.Add(stk1);
 
 				Label label1 = new Label();
 				label1.Text = "Factura: ";
@@ -134,9 +139,17 @@ namespace DistribuidoraFabio.Venta
 				entfactura.HorizontalOptions = LayoutOptions.FillAndExpand;
 				stk1.Children.Add(entfactura);
 
+				Button btnComp = new Button();
+				btnComp.Text = "Completar pedido";
+				btnComp.BackgroundColor = Color.Green;
+				btnComp.TextColor = Color.White;
+				btnComp.CornerRadius = 5;
+				btnComp.HorizontalOptions = LayoutOptions.End;
+				stk1.Children.Add(btnComp);
+
 				StackLayout stk2 = new StackLayout();
 				stk2.Orientation = StackOrientation.Horizontal;
-				stkDatos.Children.Add(stk2);
+				stkPrimero.Children.Add(stk2);
 
 				Label label2 = new Label();
 				label2.Text = "Fecha: ";
@@ -153,7 +166,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stk3 = new StackLayout();
 				stk3.Orientation = StackOrientation.Horizontal;
-				stkDatos.Children.Add(stk3);
+				stkPrimero.Children.Add(stk3);
 
 				Label label3 = new Label();
 				label3.Text = "Cliente: ";
@@ -170,7 +183,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stk4 = new StackLayout();
 				stk4.Orientation = StackOrientation.Horizontal;
-				stkDatos.Children.Add(stk4);
+				stkPrimero.Children.Add(stk4);
 
 				Label label4 = new Label();
 				label4.Text = "Vendedor: ";
@@ -192,8 +205,8 @@ namespace DistribuidoraFabio.Venta
 			}
 		}
 		private async void MostrarDetalleVenta()
-        {
-            try
+		{
+			try
 			{
 				DetalleVenta _detaVenta = new DetalleVenta()
 				{
@@ -213,12 +226,12 @@ namespace DistribuidoraFabio.Venta
 					BoxView boxViewI = new BoxView();
 					boxViewI.HeightRequest = 1;
 					boxViewI.BackgroundColor = Color.FromHex("#95B0B7");
-					stkPrd.Children.Add(boxViewI);
+					stkSegundo.Children.Add(boxViewI);
 
 					numProd = numProd + 1;
 					StackLayout stkP1 = new StackLayout();
 					stkP1.Orientation = StackOrientation.Horizontal;
-					stkPrd.Children.Add(stkP1);
+					stkSegundo.Children.Add(stkP1);
 
 					Label label1 = new Label();
 					label1.Text = "Producto " + numProd.ToString() + ":";
@@ -235,7 +248,7 @@ namespace DistribuidoraFabio.Venta
 
 					StackLayout stkP2 = new StackLayout();
 					stkP2.Orientation = StackOrientation.Horizontal;
-					stkPrd.Children.Add(stkP2);
+					stkSegundo.Children.Add(stkP2);
 
 					Label label2 = new Label();
 					label2.Text = "Cantidad:";
@@ -252,7 +265,7 @@ namespace DistribuidoraFabio.Venta
 
 					StackLayout stkP3 = new StackLayout();
 					stkP3.Orientation = StackOrientation.Horizontal;
-					stkPrd.Children.Add(stkP3);
+					stkSegundo.Children.Add(stkP3);
 
 					Label label3 = new Label();
 					label3.Text = "Precio:";
@@ -269,7 +282,7 @@ namespace DistribuidoraFabio.Venta
 
 					StackLayout stkP4 = new StackLayout();
 					stkP4.Orientation = StackOrientation.Horizontal;
-					stkPrd.Children.Add(stkP4);
+					stkSegundo.Children.Add(stkP4);
 
 					Label label4 = new Label();
 					label4.Text = "Subtotal:";
@@ -286,7 +299,7 @@ namespace DistribuidoraFabio.Venta
 
 					StackLayout stkP5 = new StackLayout();
 					stkP5.Orientation = StackOrientation.Horizontal;
-					stkPrd.Children.Add(stkP5);
+					stkSegundo.Children.Add(stkP5);
 
 					Label label5 = new Label();
 					label5.Text = "Envases:";
@@ -302,11 +315,11 @@ namespace DistribuidoraFabio.Venta
 					stkP5.Children.Add(entenv);
 				}
 			}
-            catch (Exception err)
-            {
-                await DisplayAlert("ERROR", err.ToString(), "OK");
-            }
-        }
+			catch (Exception err)
+			{
+				await DisplayAlert("ERROR", err.ToString(), "OK");
+			}
+		}
 		private async void MostraDatosVentaFinal()
 		{
 			try
@@ -316,11 +329,11 @@ namespace DistribuidoraFabio.Venta
 				BoxView boxViewI = new BoxView();
 				boxViewI.HeightRequest = 1;
 				boxViewI.BackgroundColor = Color.FromHex("#95B0B7");
-				stkFinal.Children.Add(boxViewI);
+				stkTercero.Children.Add(boxViewI);
 
 				StackLayout stack1 = new StackLayout();
 				stack1.Orientation = StackOrientation.Horizontal;
-				stkFinal.Children.Add(stack1);
+				stkTercero.Children.Add(stack1);
 
 				Label labelF1 = new Label();
 				labelF1.Text = "Tipo de Venta: ";
@@ -337,7 +350,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stack2 = new StackLayout();
 				stack2.Orientation = StackOrientation.Horizontal;
-				stkFinal.Children.Add(stack2);
+				stkTercero.Children.Add(stack2);
 
 				Label labelF2 = new Label();
 				labelF2.Text = "Estado: ";
@@ -354,7 +367,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stack3 = new StackLayout();
 				stack3.Orientation = StackOrientation.Horizontal;
-				stkFinal.Children.Add(stack3);
+				stkTercero.Children.Add(stack3);
 
 				Label labelF3 = new Label();
 				labelF3.Text = "Fecha de Entrega: ";
@@ -371,7 +384,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stack4 = new StackLayout();
 				stack4.Orientation = StackOrientation.Horizontal;
-				stkFinal.Children.Add(stack4);
+				stkTercero.Children.Add(stack4);
 
 				Label labelF4 = new Label();
 				labelF4.Text = "Observaciones: ";
@@ -388,7 +401,7 @@ namespace DistribuidoraFabio.Venta
 
 				StackLayout stack5 = new StackLayout();
 				stack5.Orientation = StackOrientation.Horizontal;
-				stkFinal.Children.Add(stack5);
+				stkTercero.Children.Add(stack5);
 
 				Label labelF5 = new Label();
 				labelF5.Text = "Total: ";
@@ -403,11 +416,48 @@ namespace DistribuidoraFabio.Venta
 				enttotal.HorizontalOptions = LayoutOptions.FillAndExpand;
 				stack5.Children.Add(enttotal);
 				////
-				
+
 			}
 			catch (Exception err)
 			{
 				await DisplayAlert("ERROR", err.ToString(), "OK");
+			}
+		}
+		private async void ToolbarItemComp_Clicked(object sender, EventArgs e)
+		{
+			string _resultObs = await DisplayPromptAsync("Pedido entregado", "Comentarios:");
+			try
+			{
+				Ventas ventas = new Ventas()
+				{
+					id_venta = _id_venta,
+					numero_factura = _numero_factura,
+					fecha_entrega = _fechaHoy,
+					estado = "Entregado",
+					observacion = _resultObs
+				};
+
+				var json = JsonConvert.SerializeObject(ventas);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
+				HttpClient client = new HttpClient();
+				var result = await client.PostAsync("https://dmrbolivia.com/api_distribuidora/ventas/editarEstadoVenta.php", content);
+				if (result.StatusCode == HttpStatusCode.OK)
+				{
+					await PopupNavigation.Instance.PopAsync();
+					await DisplayAlert("OK", "Se agrego correctamente", "OK");
+					//await Navigation.PopAsync();
+				}
+				else
+				{
+					await PopupNavigation.Instance.PopAsync();
+					await DisplayAlert("Error", result.StatusCode.ToString(), "OK");
+					//await Navigation.PopAsync();
+				}
+			}
+			catch (Exception error)
+			{
+				await PopupNavigation.Instance.PopAsync();
+				await DisplayAlert("ERROR", error.ToString(), "OK");
 			}
 		}
 	}

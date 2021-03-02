@@ -67,7 +67,7 @@ namespace DistribuidoraFabio.Cliente
                             {
                                 Type = PinType.Place,
                                 Position = position,
-                                Label = item.nombre,
+                                Label = item.nombre_cliente,
                                 Address = item.telefono.ToString(),
                             };
 

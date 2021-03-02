@@ -11,7 +11,7 @@
     <ListView x:Name="listaProd" ItemTapped="OnItemSelected" SeparatorColor="#95B0B7">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding nombre}" TextColor="#95B0B7" Detail="{Binding nombre_tipo_producto}" DetailColor="#4DCCE8"/>
+                <TextCell Text="{Binding nombre_producto}" TextColor="#95B0B7" Detail="{Binding nombre_tipo_producto}" DetailColor="#4DCCE8"/>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

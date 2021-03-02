@@ -39,9 +39,9 @@ namespace DistribuidoraFabio.Venta
 		}
 		private async void OnItemSelected(object sender, ItemTappedEventArgs e)
 		{
-			var detalles = e.Item as Ventas;
-			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total));
+			//var detalles = e.Item as Ventas;
+			//await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
+			//											detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total));
 		}
 	}
 }

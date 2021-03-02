@@ -83,7 +83,7 @@ namespace DistribuidoraFabio.ViewModels
 				_listaDeProducto.Add(new Models.ProductoNombre
 				{
 					id_producto = item.id_producto,
-					nombre = item.nombre,
+					nombre_producto = item.nombre_producto,
 					nombre_tipo_producto = item.nombre_tipo_producto,
 					precio_venta = item.precio_venta,
 					producto_alerta = item.producto_alerta,

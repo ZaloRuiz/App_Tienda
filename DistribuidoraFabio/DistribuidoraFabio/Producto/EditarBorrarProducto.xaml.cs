@@ -16,11 +16,11 @@ namespace DistribuidoraFabio.Producto
 	public partial class EditarBorrarProducto : ContentPage
 	{
         private int IdProd;
-		public EditarBorrarProducto(int id_producto, string nombre, string nombre_tipo_producto, decimal stock,
+		public EditarBorrarProducto(int id_producto, string nombre_producto, string nombre_tipo_producto, decimal stock,
 			decimal stock_valorado, decimal promedio, decimal precio_venta, decimal producto_alerta)
 		{
 			InitializeComponent();
-			nombreProdEntry.Text = nombre;
+			nombreProdEntry.Text = nombre_producto;
 			idTProdEntry.Text = nombre_tipo_producto.ToString();
 			stockEntry.Text = stock.ToString();
 			stockValoradoEntry.Text = stock_valorado.ToString();
@@ -34,7 +34,7 @@ namespace DistribuidoraFabio.Producto
             Models.Producto producto = new Models.Producto()
             {
                 id_producto = IdProd,
-                nombre = nombreProdEntry.Text,
+                nombre_producto = nombreProdEntry.Text,
                 id_tipo_producto = Convert.ToInt32(idTProdEntry.Text),
                 stock = Convert.ToDecimal(stockEntry.Text),
                 stock_valorado = Convert.ToDecimal(stockValoradoEntry.Text),

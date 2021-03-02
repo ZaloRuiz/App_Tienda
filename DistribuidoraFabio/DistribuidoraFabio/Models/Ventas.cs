@@ -14,5 +14,8 @@ namespace DistribuidoraFabio.Models
         public string tipo_venta { get; set; }
         public decimal saldo { get; set; }
         public decimal total { get; set; }
+        public DateTime fecha_entrega { get; set; }
+        public string estado { get; set; }
+        public string observacion { get; set; }
     }
 }

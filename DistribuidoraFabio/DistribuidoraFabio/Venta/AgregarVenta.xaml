@@ -6,12 +6,12 @@
              BackgroundColor="#324A51">
     <ContentPage.Content>
          <ScrollView>
-            <StackLayout x:Name="stkVenta" Padding="10" Visual="Material">
+            <StackLayout x:Name="stkVenta" Padding="10" Visual="Material" VerticalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Visual="Material">
                     <Picker x:Name="clientePicker" Title="Cliente" 
-                        ItemsSource="{Binding nombre}"
-                        ItemDisplayBinding="{Binding nombre}"
-                        SelectedItem="{Binding nombre}"
+                        ItemsSource="{Binding nombre_cliente}"
+                        ItemDisplayBinding="{Binding nombre_cliente}"
+                        SelectedItem="{Binding nombre_cliente}"
                         SelectedIndexChanged="ClientePicker_SelectedIndexChanged_1"
                             HorizontalOptions="FillAndExpand"/>
                     <Picker x:Name="vendedorPicker" Title="Vendedor"
@@ -31,8 +31,8 @@
                                 <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                     <Picker x:Name="picker_Producto" Title="Producto" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                                             SelectedIndexChanged="picker_Producto_SelectedIndexChanged"
-                                            ItemsSource="{Binding nombre}" ItemDisplayBinding="{Binding nombre}" 
-                                            SelectedItem="{Binding nombre}"/>
+                                            ItemsSource="{Binding nombre_producto}" ItemDisplayBinding="{Binding nombre_producto}" 
+                                            SelectedItem="{Binding nombre_producto}"/>
                                 </StackLayout>
                                 <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                     <Entry x:Name="txtStock" TextColor="Black" Placeholder="Stock" VerticalOptions="Center" HorizontalOptions="FillAndExpand" IsReadOnly="True"/>
@@ -56,48 +56,54 @@
                         </Frame>
                     </StackLayout>
                 <StackLayout Visual="Material">
-                        <ListView x:Name="listProductos" HorizontalOptions="FillAndExpand" HeightRequest="150" VerticalScrollBarVisibility="Always" 
-                                  ItemTapped="listProductos_ItemTapped" Visual="Material" SeparatorColor="#95B0B7">
-                            <ListView.Header>
+                    <ListView x:Name="listProductos" HorizontalOptions="FillAndExpand" HeightRequest="150" VerticalScrollBarVisibility="Always" 
+                                ItemTapped="listProductos_ItemTapped" Visual="Material" SeparatorColor="#95B0B7">
+                        <ListView.Header>
                             <StackLayout Orientation="Horizontal" Visual="Material">
                                 <Label Text="Lista productos" TextColor="#95B0B7"/>
-                                </StackLayout>
-                            </ListView.Header>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <Grid Padding="0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"></RowDefinition>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
+                            </StackLayout>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
                                         <Label Grid.Row="0" Grid.Column="0" FontSize="Medium" TextColor="#95B0B7" LineBreakMode="TailTruncation">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Prod: "/>
-                                                        <Span Text="{Binding nombre_producto}"/>
-                                                        <Span Text="   Cant: "/>
-                                                        <Span Text="{Binding cantidad}"/>
-                                                        <Span Text="   Desc: "/>
-                                                        <Span Text="{Binding descuento}"/>
-                                                        <Span Text="   Subtotal: "/>
-                                                        <Span Text="{Binding sub_total, StringFormat=' {0:0.00}'}"/>
-                                                        <Span Text=" Bs."/>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>    
-                    </StackLayout>
-                    <Picker x:Name="tipoVentaEntry" Title="Tipo de Pago" SelectedIndexChanged="TipoVentaEntry_SelectedIndexChanged"/>
-                    <Entry x:Name="saldo_VentaEntry" Placeholder="Credito" Keyboard="Numeric" Text="0" IsVisible="False"/>
-                    <Entry x:Name="totalVentaEntry" Keyboard="Numeric" Placeholder="Total" TextColor="Black" IsReadOnly="True"/>
-                    <Button x:Name="btnVentaGuardar" Text="Guardar" Padding="40, 20, 40, 20" Clicked="BtnVentaGuardar_Clicked"/>
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Prod: "/>
+                                                    <Span Text="{Binding nombre_producto}"/>
+                                                    <Span Text="   Cant: "/>
+                                                    <Span Text="{Binding cantidad}"/>
+                                                    <Span Text="   Desc: "/>
+                                                    <Span Text="{Binding descuento}"/>
+                                                    <Span Text="   Envases: "/>
+                                                    <Span Text="{Binding envases}"/>
+                                                    <Span Text="   Subtotal: "/>
+                                                    <Span Text="{Binding sub_total, StringFormat=' {0:0.00}'}"/>
+                                                    <Span Text=" Bs."/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Picker x:Name="tipoVentaEntry" Title="Tipo de Pago" HorizontalOptions="FillAndExpand" SelectedIndexChanged="TipoVentaEntry_SelectedIndexChanged"/>
+                    <Entry x:Name="saldo_VentaEntry" Placeholder="Credito" HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="0" IsVisible="False"/>
+                    <Picker x:Name="estadoEntry" Title="Estado" HorizontalOptions="FillAndExpand" SelectedIndexChanged="estadoEntry_SelectedIndexChanged"/>
+                </StackLayout>
+                <Entry x:Name="totalVentaEntry" Keyboard="Numeric" Placeholder="Total" HorizontalOptions="FillAndExpand" TextColor="Black" FontSize="18" IsReadOnly="True"/>
+                <Editor x:Name="entryObs" Placeholder="Observacion" Text="No" TextColor="Black" HorizontalOptions="FillAndExpand"/>
+                <Button x:Name="btnVentaGuardar" Text="Guardar" Padding="40, 20, 40, 20" Clicked="BtnVentaGuardar_Clicked"/>
                 </StackLayout>
             </ScrollView>
     </ContentPage.Content>

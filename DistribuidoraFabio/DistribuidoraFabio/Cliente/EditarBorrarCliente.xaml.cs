@@ -16,16 +16,18 @@ namespace DistribuidoraFabio.Cliente
 	public partial class EditarBorrarCliente : ContentPage
 	{
         private int IdCliente = 0;
-        public EditarBorrarCliente(int id_cliente, int codigo_c, string nombre, string ubicacion_latitud, string ubicacion_longitud, int telefono, string razon_social, int nit)
+        public EditarBorrarCliente(int id_cliente, int codigo_c, string nombre_cliente, string ubicacion_latitud, string ubicacion_longitud, int telefono, 
+            string direccion, string razon_social, int nit)
 		{
 			InitializeComponent();
             IdCliente = id_cliente;
 			idClienteEntry.Text = id_cliente.ToString();
             codigoEntry.Text = codigo_c.ToString();
-			nombreClienteEntry.Text = nombre;
+			nombreClienteEntry.Text = nombre_cliente;
 			ubicacionLatitudEntry.Text = ubicacion_latitud;
 			ubicacionLongitudEntry.Text = ubicacion_longitud;
 			telefonoClienteEntry.Text = telefono.ToString();
+            direccionEntry.Text = direccion;
 			nitClienteEntry.Text = nit.ToString();
             razonEntry.Text = razon_social;
 		}
@@ -41,10 +43,11 @@ namespace DistribuidoraFabio.Cliente
                         {
                             id_cliente = Convert.ToInt32(idClienteEntry.Text),
                             codigo_c = Convert.ToInt32(codigoEntry.Text),
-                            nombre = nombreClienteEntry.Text,
+                            nombre_cliente = nombreClienteEntry.Text,
                             ubicacion_latitud = ubicacionLatitudEntry.Text,
                             ubicacion_longitud = ubicacionLongitudEntry.Text,
                             telefono = Convert.ToInt32(telefonoClienteEntry.Text),
+                            direccion_cliente = direccionEntry.Text,
                             razon_social = razonEntry.Text,
                             nit = Convert.ToInt32(nitClienteEntry.Text)
                         };

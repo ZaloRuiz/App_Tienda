@@ -25,11 +25,13 @@ namespace DistribuidoraFabio.Venta
         private decimal MontoTotal = 0;
         private int idClienteSelected = 0;
         private int idVendedorSelected = 0;
+        private DateTime _fechaHoy = DateTime.Now;
         public AgregarVenta()
         {
             InitializeComponent();
             App._detalleVData.Clear();
             tipoVentaEntry.ItemsSource = new List<string> { "Contado", "Credito" };
+            estadoEntry.ItemsSource = new List<string> { "Entregado", "Pendiente", "Cancelado" };
             GetDataCliente();
             GetDataVendedor();
             GetProductos();
@@ -136,7 +138,7 @@ namespace DistribuidoraFabio.Venta
                 {
                     foreach (var item in clienteList)
                     {
-                        if (clientePick == item.nombre)
+                        if (clientePick == item.nombre_cliente)
                         {
                             idClienteSelected = item.id_cliente;
                         }
@@ -146,6 +148,16 @@ namespace DistribuidoraFabio.Venta
                 {
                     await DisplayAlert("ERROR", err.ToString(), "OK");
                 }
+            }
+        }
+        private string estadoPick;
+        private void estadoEntry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                estadoPick = picker.Items[selectedIndex];
             }
         }
         private string tipoVentaPick;
@@ -182,7 +194,7 @@ namespace DistribuidoraFabio.Venta
 					{
 						foreach (var item in prods)
 						{
-							if (pickedProducto == item.nombre)
+							if (pickedProducto == item.nombre_producto)
 							{
 								txtPrecio.Text = item.precio_venta.ToString("0.##");
 								txtStock.Text = item.stock.ToString();
@@ -211,12 +223,13 @@ namespace DistribuidoraFabio.Venta
         decimal stockSelected = 0;
         decimal stockValoradoSelected = 0;
         decimal promedioSelected = 0;
+        int envaseSelected = 0;
         private async void txtDescuento_Completed(object sender, EventArgs e)
         {
             try
             {
                 precioSelected = Convert.ToDecimal(txtPrecio.Text);
-                cantidaSelected = Convert.ToInt32(txtCantidad.Text);
+                //cantidaSelected = Convert.ToInt32(txtCantidad.Text);
                 descuentoSelected = Convert.ToDecimal(txtDescuento.Text);
                 stockSelected = Convert.ToDecimal(txtStock.Text);
                 stockValoradoSelected = Convert.ToDecimal(txtStockValorado.Text);
@@ -224,6 +237,7 @@ namespace DistribuidoraFabio.Venta
                 precioFinalSelected = precioSelected - descuentoSelected;
                 subTotalSelected = precioFinalSelected * cantidaSelected;
                 txtSubTotal.Text = subTotalSelected.ToString();
+                envaseSelected = Convert.ToInt32(txtEnvases.Text);
             }
             catch (Exception err)
             {
@@ -243,6 +257,7 @@ namespace DistribuidoraFabio.Venta
                 precioFinalSelected = precioSelected - descuentoSelected;
                 subTotalSelected = precioFinalSelected * cantidaSelected;
                 txtSubTotal.Text = subTotalSelected.ToString();
+                envaseSelected = Convert.ToInt32(txtEnvases.Text);
             }
             catch (Exception err)
             {
@@ -251,42 +266,44 @@ namespace DistribuidoraFabio.Venta
         }
         private async void agregarAlista_Clicked(object sender, EventArgs e)
         {
-            //         try
-            //{
-            //             App._detalleVData.Add(new DetalleVenta_previo
-            //             {
-            //                 cantidad = cantidaSelected,
-            //                 id_producto = idProductoSelected,
-            //                 nombre_producto = pickedTP + " " + pickedProducto,
-            //                 precio_producto = precioSelected,
-            //                 descuento = descuentoSelected,
-            //                 sub_total = subTotalSelected,
-            //                 stock = stockSelected,
-            //                 stock_valorado = stockValoradoSelected,
-            //                 promedio = promedioSelected
-            //             }); 
-            //             picker_Producto.SelectedIndex = -1;
-            //             picker_Producto.Items.Clear();
-            //             picker_TP.SelectedIndex = -1;
-            //             txtPrecio.Text = string.Empty;
-            //             txtCantidad.Text = string.Empty;
-            //             txtDescuento.Text = string.Empty;
-            //             txtSubTotal.Text = string.Empty;
-            //             txtStock.Text = string.Empty;
-            //             txtStockValorado.Text = string.Empty;
-            //             txtPromedio.Text = string.Empty;
-            //             MontoTotal = 0;
-            //             foreach(var item in App._detalleVData)
-            //	{
-            //                 MontoTotal = MontoTotal + item.sub_total;
-            //	}
-            //             totalVentaEntry.Text = MontoTotal.ToString();
-            //}
-            //         catch(Exception err)
-            //{
-            //             await DisplayAlert("Erro", err.ToString(), "OK");
-            //         }
-        }
+			try
+			{
+                envaseSelected = Convert.ToInt32(txtEnvases.Text);
+                App._detalleVData.Add(new DetalleVenta_previo
+				{
+					cantidad = cantidaSelected,
+					id_producto = idProductoSelected,
+					nombre_producto = pickedProducto,
+					precio_producto = precioSelected,
+					descuento = descuentoSelected,
+					sub_total = subTotalSelected,
+                    envases = envaseSelected,
+					stock = stockSelected,
+					stock_valorado = stockValoradoSelected,
+					promedio = promedioSelected
+				});
+				picker_Producto.SelectedIndex = -1;
+				//picker_Producto.Items.Clear();
+				txtPrecio.Text = string.Empty;
+				txtCantidad.Text = string.Empty;
+				txtDescuento.Text = string.Empty;
+				txtSubTotal.Text = string.Empty;
+				txtStock.Text = string.Empty;
+				txtStockValorado.Text = string.Empty;
+				txtPromedio.Text = string.Empty;
+                txtEnvases.Text = "0";
+				MontoTotal = 0;
+				foreach (var item in App._detalleVData)
+				{
+					MontoTotal = MontoTotal + item.sub_total;
+				}
+				totalVentaEntry.Text = MontoTotal.ToString();
+			}
+			catch (Exception err)
+			{
+				await DisplayAlert("Error", err.ToString(), "OK");
+			}
+		}
         private async void listProductos_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             var action = await DisplayActionSheet("BORRAR PRODUCTO DE LA LISTA?", null, null, "SI", "NO");
@@ -330,6 +347,7 @@ namespace DistribuidoraFabio.Venta
                             precio_producto = item.precio_producto,
                             descuento = item.descuento,
                             sub_total = item.sub_total,
+                            envases = item.envases,
                             factura = Convert.ToInt32(numero_facturaVentaEntry.Text)
                         };
 
@@ -380,7 +398,10 @@ namespace DistribuidoraFabio.Venta
                         id_vendedor = idVendedorSelected,
                         tipo_venta = tipoVentaPick,
                         saldo = Convert.ToDecimal(saldo_VentaEntry.Text),
-                        total = Convert.ToDecimal(totalVentaEntry.Text)
+                        total = Convert.ToDecimal(totalVentaEntry.Text),
+                        fecha_entrega = _fechaHoy,
+                        estado = estadoPick,
+                        observacion = entryObs.Text
                     };
 
                     var json = JsonConvert.SerializeObject(ventas);

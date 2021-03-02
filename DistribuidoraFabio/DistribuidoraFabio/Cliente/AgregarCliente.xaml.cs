@@ -26,10 +26,11 @@ namespace DistribuidoraFabio.Cliente
 			{
 				Models.Cliente cliente = new Models.Cliente()
 				{
-					nombre = nombreEntry.Text,
+					nombre_cliente = nombreEntry.Text,
 					ubicacion_latitud = ubicacionLatitudEntry.Text,
 					ubicacion_longitud = ubicacionLongitudEntry.Text,
 					telefono = Convert.ToInt32(telefonoEntry.Text),
+					direccion_cliente = direccionEntry.Text,
 					razon_social = razEntry.Text,
 					nit = Convert.ToInt32(nitEntry.Text)
 				};

@@ -19,6 +19,7 @@ namespace DistribuidoraFabio.Venta
 	{
 		List<Ventas> _Entregado = new List<Ventas>();
 		List<Ventas> _Pendiente = new List<Ventas>();
+		List<Ventas> _Cancelado = new List<Ventas>();
 		public ListaPedidos()
 		{
 			InitializeComponent();
@@ -33,20 +34,33 @@ namespace DistribuidoraFabio.Venta
 			var ventas = JsonConvert.DeserializeObject<List<Ventas>>(response);
 			foreach(var item in ventas)
 			{
-				if(item.saldo == 0)
+				if(item.estado == "Entregado")
 				{
 					_Entregado.Add(item);
 				}
-				else if(item.saldo != 0)
+				else if(item.estado == "Pendiente")
 				{
 					_Pendiente.Add(item);
+				}
+				else if(item.estado == "Cancelado")
+				{
+					_Cancelado.Add(item);
 				}
 			}
 			listaEntregados.ItemsSource = _Entregado;
 			listaPendientes.ItemsSource = _Pendiente;
+			listaCancelados.ItemsSource = _Cancelado;
 			await PopupNavigation.Instance.PopAsync();
 		}
 		private void ToolbarItem_Clicked(object sender, EventArgs e)
+		{
+			Navigation.PushAsync(new AgregarVenta());
+		}
+		private void ToolbarItemP_Clicked(object sender, EventArgs e)
+		{
+			Navigation.PushAsync(new AgregarVenta());
+		}
+		private void ToolbarItemC_Clicked(object sender, EventArgs e)
 		{
 			Navigation.PushAsync(new AgregarVenta());
 		}
@@ -54,13 +68,22 @@ namespace DistribuidoraFabio.Venta
 		{
 			var detalles = e.Item as Ventas;
 			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total));
+														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+														detalles.estado, detalles.observacion));
 		}
 		private async void OnItemSelectedP(object sender, ItemTappedEventArgs e)
 		{
 			var detalles = e.Item as Ventas;
+			await Navigation.PushAsync(new MostrarVentaPendiente(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
+														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+														detalles.estado, detalles.observacion));
+		}
+		private async void OnItemSelectedC(object sender, ItemTappedEventArgs e)
+		{
+			var detalles = e.Item as Ventas;
 			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total));
+														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+														detalles.estado, detalles.observacion));
 		}
 	}
 }
