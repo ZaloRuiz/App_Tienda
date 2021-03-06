@@ -5,11 +5,14 @@
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              Visual="Material"
              BackgroundColor="#324A51">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="toolbarFiltro" Text="Filtrar por fecha" Clicked="toolbarFiltro_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView Orientation="Both">
             <dg:DataGrid ItemsSource="{Binding ReportesDVs}" SelectionEnabled="True"
-               RowHeight="70" HeaderHeight="50" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8"
-               PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            RowHeight="70" HeaderHeight="50" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8"
+            PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
                 <x:Arguments>
                     <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                 </x:Arguments>
@@ -20,7 +23,7 @@
                     </OnIdiom>
                 </dg:DataGrid.HeaderFontSize>
                 <dg:DataGrid.Columns>
-                    <dg:DataGridColumn Title="Id" PropertyName="id_dv"/>
+                    <dg:DataGridColumn Title="Id" PropertyName="id_venta"/>
                     <dg:DataGridColumn Title="Nombre Vendedor" PropertyName="nombre" />
                     <dg:DataGridColumn Title="Fecha" PropertyName="fecha" StringFormat="{}{0:dd/MM/yyyy}"/>
                     <dg:DataGridColumn Title="Codigo Cliente" PropertyName="codigo_c" />

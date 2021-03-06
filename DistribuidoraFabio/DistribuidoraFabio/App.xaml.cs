@@ -19,6 +19,8 @@ namespace DistribuidoraFabio
 		public static ObservableCollection<DetalleVenta_previo> _DetalleVentaData { get { return _detalleVData; } }
 		public static ObservableCollection<DetalleCompra_previo> _detalleCData = new ObservableCollection<DetalleCompra_previo>();
 		public static ObservableCollection<DetalleCompra_previo> _DetalleCompraData { get { return _detalleCData; } }
+		public static DateTime _fechaInicioFiltro = DateTime.Today.AddYears(-5);
+		public static DateTime _fechaFinalFiltro = DateTime.Now;
 		protected override void OnStart()
 		{
 		}

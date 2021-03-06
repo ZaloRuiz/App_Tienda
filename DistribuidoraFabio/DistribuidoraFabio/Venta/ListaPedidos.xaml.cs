@@ -1,5 +1,6 @@
 ﻿using DistribuidoraFabio.Helpers;
 using DistribuidoraFabio.Models;
+using DistribuidoraFabio.ViewModels;
 using Newtonsoft.Json;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -23,35 +24,36 @@ namespace DistribuidoraFabio.Venta
 		public ListaPedidos()
 		{
 			InitializeComponent();
+			this.BindingContext = new ListaPedidosVM();
 		}
-		protected async override void OnAppearing()
-		{
-			base.OnAppearing();
-			string BusyReason = "Cargando...";
-			await PopupNavigation.Instance.PushAsync(new BusyPopup(BusyReason));
-			HttpClient client = new HttpClient();
-			var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVenta.php");
-			var ventas = JsonConvert.DeserializeObject<List<Ventas>>(response);
-			foreach(var item in ventas)
-			{
-				if(item.estado == "Entregado")
-				{
-					_Entregado.Add(item);
-				}
-				else if(item.estado == "Pendiente")
-				{
-					_Pendiente.Add(item);
-				}
-				else if(item.estado == "Cancelado")
-				{
-					_Cancelado.Add(item);
-				}
-			}
-			listaEntregados.ItemsSource = _Entregado;
-			listaPendientes.ItemsSource = _Pendiente;
-			listaCancelados.ItemsSource = _Cancelado;
-			await PopupNavigation.Instance.PopAsync();
-		}
+		//protected async override void OnAppearing()
+		//{
+		//	base.OnAppearing();
+		//	string BusyReason = "Cargando...";
+		//	this.IsBusy = true;
+		//	HttpClient client = new HttpClient();
+		//	var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVenta.php");
+		//	var ventas = JsonConvert.DeserializeObject<List<Ventas>>(response);
+		//	foreach(var item in ventas)
+		//	{
+		//		if(item.estado == "Entregado")
+		//		{
+		//			_Entregado.Add(item);
+		//		}
+		//		else if(item.estado == "Pendiente")
+		//		{
+		//			_Pendiente.Add(item);
+		//		}
+		//		else if(item.estado == "Cancelado")
+		//		{
+		//			_Cancelado.Add(item);
+		//		}
+		//	}
+		//	listaEntregados.ItemsSource = _Entregado;
+		//	listaPendientes.ItemsSource = _Pendiente;
+		//	listaCancelados.ItemsSource = _Cancelado;
+		//	//await PopupNavigation.Instance.PopAsync();
+		//}
 		private void ToolbarItem_Clicked(object sender, EventArgs e)
 		{
 			Navigation.PushAsync(new AgregarVenta());

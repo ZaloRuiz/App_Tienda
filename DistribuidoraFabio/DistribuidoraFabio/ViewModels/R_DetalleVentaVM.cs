@@ -13,6 +13,8 @@ namespace DistribuidoraFabio.ViewModels
 {
 	class R_DetalleVentaVM : INotifyPropertyChanged
 	{
+		DateTime fecha_inicio;
+		DateTime fecha_final;
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged(string property)
 		{
@@ -49,11 +51,13 @@ namespace DistribuidoraFabio.ViewModels
 		private async void CmdRefresh()
 		{
 			IsRefreshing = true;
-			await Task.Delay(2000);
+			await Task.Delay(1500);
 			IsRefreshing = false;
 		}
-		public R_DetalleVentaVM()
+		public R_DetalleVentaVM(DateTime _fechaInicio, DateTime _fechaFinal)
 		{
+			fecha_inicio = _fechaInicio;
+			fecha_final = _fechaFinal;
 			_reporteDV = new ObservableCollection<Models._RDetalleVenta>();
 			GetReporte();
 			RefreshCommand = new Command(CmdRefresh);
@@ -68,26 +72,29 @@ namespace DistribuidoraFabio.ViewModels
 
 				foreach (var item in _dataRDV)
 				{
-					_reporteDV.Add(new Models._RDetalleVenta
+					if(item.fecha.Ticks > fecha_inicio.Ticks && item.fecha.Ticks < fecha_final.Ticks)
 					{
-						id_dv = item.id_dv,
-						nombre = item.nombre,
-						fecha = item.fecha,
-						codigo_c = item.codigo_c,
-						nombre_cliente = item.nombre_cliente,
-						razon_social = item.razon_social,
-						nit = item.nit,
-						telefono = item.telefono,
-						direccion_cliente = item.direccion_cliente,
-						geolocalizacion = item.geolocalizacion,
-						nombre_producto = item.nombre_producto,
-						precio_producto = item.precio_producto,
-						cantidad = item.cantidad,
-						sub_total = item.sub_total,
-						envases = item.envases,
-						tipo_venta = item.tipo_venta,
-						estado = item.estado
-					});
+						_reporteDV.Add(new Models._RDetalleVenta
+						{
+							id_venta = item.id_venta,
+							nombre = item.nombre,
+							fecha = item.fecha,
+							codigo_c = item.codigo_c,
+							nombre_cliente = item.nombre_cliente,
+							razon_social = item.razon_social,
+							nit = item.nit,
+							telefono = item.telefono,
+							direccion_cliente = item.direccion_cliente,
+							geolocalizacion = item.geolocalizacion,
+							nombre_producto = item.nombre_producto,
+							precio_producto = item.precio_producto,
+							cantidad = item.cantidad,
+							sub_total = item.sub_total,
+							envases = item.envases,
+							tipo_venta = item.tipo_venta,
+							estado = item.estado
+						});
+					}
 				}
 			}
 			catch (Exception err)
