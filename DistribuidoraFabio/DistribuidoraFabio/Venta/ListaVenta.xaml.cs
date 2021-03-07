@@ -32,8 +32,8 @@ namespace DistribuidoraFabio.Venta
 			string BusyReason = "Cargando...";
 			await PopupNavigation.Instance.PushAsync(new BusyPopup(BusyReason));
 			HttpClient client = new HttpClient();
-			var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVenta.php");
-			var ventas = JsonConvert.DeserializeObject<List<Ventas>>(response);
+			var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVentaNombre.php");
+			var ventas = JsonConvert.DeserializeObject<List<VentasNombre>>(response);
 			listaVenta.ItemsSource = ventas;
 			await PopupNavigation.Instance.PopAsync();
 		}

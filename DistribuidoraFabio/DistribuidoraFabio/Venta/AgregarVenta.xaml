@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="DistribuidoraFabio.Venta.AgregarVenta"
+             xmlns:local="clr-namespace:CustomRenderer;assembly=CustomRenderer" 
+             xmlns:local1="clr-namespace:DistribuidoraFabio.Helpers"
              Visual="Material"
              BackgroundColor="#324A51">
     <ContentPage.Content>
@@ -28,11 +30,10 @@
                     <Frame HasShadow="True" CornerRadius="10" Padding="0" Margin="0" BorderColor="DarkGray" Visual="Material">
                         <StackLayout Visual="Material">
                             <StackLayout Orientation="Horizontal" Visual="Material">
-                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-                                    <Picker x:Name="picker_Producto" Title="Producto" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
-                                            SelectedIndexChanged="picker_Producto_SelectedIndexChanged"
-                                            ItemsSource="{Binding nombre_producto}" ItemDisplayBinding="{Binding nombre_producto}" 
-                                            SelectedItem="{Binding nombre_producto}"/>
+                                <StackLayout HorizontalOptions="FillAndExpand" Padding="10, 0, 0, 0">
+                                    <local1:CustomAutoSuggestBox x:Name="entryNombreProd" HorizontalOptions="FillAndExpand" TextChanged="entryNombreProd_TextChanged_1"
+                                                          SuggestionChosen="entryNombreProd_SuggestionChosen_1"  QuerySubmitted="entryNombreProd_QuerySubmitted_1"
+                                                          PlaceholderText="Buscar producto.." VerticalOptions="EndAndExpand" TextColor="Black"/>
                                 </StackLayout>
                                 <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
                                     <Entry x:Name="txtStock" TextColor="Black" Placeholder="Stock" VerticalOptions="Center" HorizontalOptions="FillAndExpand" IsReadOnly="True"/>

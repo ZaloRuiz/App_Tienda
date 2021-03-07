@@ -24,16 +24,16 @@ namespace DistribuidoraFabio.Venta
 		private int _id_venta = 0;
 		private DateTime _fecha;
 		private int _numero_factura = 0;
-		private int _cliente;
+		private string _cliente;
         private string _nombreCliente = "NombreCliente";
-		private int _vendedor;
+		private string _vendedor;
         private string _nombreVendedor = "NombreVendedor";
 		private string _tipo_venta;
         private decimal _total = 0;
         private string _estado;
         private DateTime _fecha_entrega;
         private string _observacion;
-        public MostrarVenta(int id_venta, DateTime fecha, int numero_factura, int id_cliente, int id_vendedor, string tipo_venta, 
+        public MostrarVenta(int id_venta, DateTime fecha, int numero_factura, string nombre_cliente, string nombre_vendedor, string tipo_venta, 
 			decimal saldo, decimal total, DateTime fecha_entrega, string estado, string observacion)
 		{
             string BusyReason = "Cargando...";
@@ -43,8 +43,8 @@ namespace DistribuidoraFabio.Venta
             _id_venta = id_venta;
             _fecha = fecha;
             _numero_factura = numero_factura;
-            _cliente = id_cliente;
-            _vendedor = id_vendedor;
+            _cliente = nombre_cliente;
+            _vendedor = nombre_vendedor;
 			_tipo_venta = tipo_venta;
             _total = total;
             _estado = estado;
@@ -58,61 +58,61 @@ namespace DistribuidoraFabio.Venta
 			{
                 _tipo_venta = tipo_venta;
             }
-			GetDataCliente();
-			GetDataVendedor();
+			//GetDataCliente();
+			//GetDataVendedor();
 			MostraDatosVentaInicial();
 			MostrarDetalleVenta();
 			MostraDatosVentaFinal();
 			PopupNavigation.Instance.PopAsync();
         }
-        private async void GetDataCliente()
-        {
-			try
-			{
-				HttpClient client = new HttpClient();
-				var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/clientes/listaCliente.php");
-				var clientes = JsonConvert.DeserializeObject<List<Models.Cliente>>(response).ToList();
-				foreach (var item in clientes)
-				{
-					if (item.id_cliente == _cliente)
-					{
-						_nombreCliente = item.nombre_cliente;
-					}
-					else
-					{
-						_nombreCliente = item.id_cliente.ToString();
-					}
-				}
-			}
-			catch(Exception err)
-			{
-				await DisplayAlert("ERROR", err.ToString(), "OK");
-			}
-        }
-        private async void GetDataVendedor()
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-                var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/vendedores/listaVendedores.php");
-                var vendedores = JsonConvert.DeserializeObject<List<Vendedores>>(response).ToList();
-                foreach (var item in vendedores)
-                {
-                    if(item.id_vendedor == _vendedor)
-					{
-                        _nombreVendedor = item.nombre;
-					}
-					else
-					{
-						_nombreVendedor = item.id_vendedor.ToString();
-					}
-                }
-            }
-            catch (Exception error)
-            {
-                await DisplayAlert("Erro", error.ToString(), "OK");
-            }
-        }
+   //     private async void GetDataCliente()
+   //     {
+			//try
+			//{
+			//	HttpClient client = new HttpClient();
+			//	var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/clientes/listaCliente.php");
+			//	var clientes = JsonConvert.DeserializeObject<List<Models.Cliente>>(response).ToList();
+			//	foreach (var item in clientes)
+			//	{
+			//		if (item.id_cliente == _cliente)
+			//		{
+			//			_nombreCliente = item.nombre_cliente;
+			//		}
+			//		else
+			//		{
+			//			_nombreCliente = item.id_cliente.ToString();
+			//		}
+			//	}
+			//}
+			//catch(Exception err)
+			//{
+			//	await DisplayAlert("ERROR", err.ToString(), "OK");
+			//}
+   //     }
+   //     private async void GetDataVendedor()
+   //     {
+   //         try
+   //         {
+   //             HttpClient client = new HttpClient();
+   //             var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/vendedores/listaVendedores.php");
+   //             var vendedores = JsonConvert.DeserializeObject<List<Vendedores>>(response).ToList();
+   //             foreach (var item in vendedores)
+   //             {
+   //                 if(item.id_vendedor == _vendedor)
+			//		{
+   //                     _nombreVendedor = item.nombre;
+			//		}
+			//		else
+			//		{
+			//			_nombreVendedor = item.id_vendedor.ToString();
+			//		}
+   //             }
+   //         }
+   //         catch (Exception error)
+   //         {
+   //             await DisplayAlert("Erro", error.ToString(), "OK");
+   //         }
+   //     }
 		private async void MostraDatosVentaInicial()
 		{
 			try
@@ -162,7 +162,7 @@ namespace DistribuidoraFabio.Venta
 				label3.WidthRequest = 200;
 				stk3.Children.Add(label3);
 				Label entcliente = new Label();
-				entcliente.Text = _nombreCliente;
+				entcliente.Text = _cliente;
 				entcliente.FontSize = 23;
 				entcliente.TextColor = Color.FromHex("#95B0B7");
 				entcliente.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -179,7 +179,7 @@ namespace DistribuidoraFabio.Venta
 				label4.WidthRequest = 200;
 				stk4.Children.Add(label4);
 				Label entVend = new Label();
-				entVend.Text = _nombreVendedor;
+				entVend.Text = _vendedor;
 				entVend.FontSize = 23;
 				entVend.TextColor = Color.FromHex("#95B0B7");
 				entVend.HorizontalOptions = LayoutOptions.FillAndExpand;

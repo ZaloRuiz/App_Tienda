@@ -21,8 +21,8 @@ namespace DistribuidoraFabio.ViewModels
 		}
 
 
-		private ObservableCollection<Ventas> _listaPedidosEnt;
-		public ObservableCollection<Ventas> ListaPedidosEnt
+		private ObservableCollection<VentasNombre> _listaPedidosEnt;
+		public ObservableCollection<VentasNombre> ListaPedidosEnt
 		{
 			get { return _listaPedidosEnt; }
 			set
@@ -34,8 +34,8 @@ namespace DistribuidoraFabio.ViewModels
 				}
 			}
 		}
-		private ObservableCollection<Ventas> _listaPedidosPen;
-		public ObservableCollection<Ventas> ListaPedidosPen
+		private ObservableCollection<VentasNombre> _listaPedidosPen;
+		public ObservableCollection<VentasNombre> ListaPedidosPen
 		{
 			get { return _listaPedidosPen; }
 			set
@@ -47,8 +47,8 @@ namespace DistribuidoraFabio.ViewModels
 				}
 			}
 		}
-		private ObservableCollection<Ventas> _listaPedidosCanc;
-		public ObservableCollection<Ventas> ListaPedidosCanc
+		private ObservableCollection<VentasNombre> _listaPedidosCanc;
+		public ObservableCollection<VentasNombre> ListaPedidosCanc
 		{
 			get { return _listaPedidosCanc; }
 			set
@@ -62,9 +62,9 @@ namespace DistribuidoraFabio.ViewModels
 		}
 		public ListaPedidosVM()
 		{
-			_listaPedidosEnt = new ObservableCollection<Ventas>();
-			_listaPedidosPen = new ObservableCollection<Ventas>();
-			_listaPedidosCanc = new ObservableCollection<Ventas>();
+			_listaPedidosEnt = new ObservableCollection<VentasNombre>();
+			_listaPedidosPen = new ObservableCollection<VentasNombre>();
+			_listaPedidosCanc = new ObservableCollection<VentasNombre>();
 			GetPedidos();
 		}
 		public async void GetPedidos()
@@ -72,8 +72,8 @@ namespace DistribuidoraFabio.ViewModels
 			try
 			{
 				HttpClient client = new HttpClient();
-				var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVenta.php");
-				var lista_ventas = JsonConvert.DeserializeObject<List<Ventas>>(response);
+				var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/ventas/listaVentaNombre.php");
+				var lista_ventas = JsonConvert.DeserializeObject<List<VentasNombre>>(response);
 				foreach (var item in lista_ventas)
 				{
 					if (item.estado == "Entregado")

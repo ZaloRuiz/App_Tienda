@@ -68,23 +68,23 @@ namespace DistribuidoraFabio.Venta
 		}
 		private async void OnItemSelectedE(object sender, ItemTappedEventArgs e)
 		{
-			var detalles = e.Item as Ventas;
-			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+			var detalles = e.Item as VentasNombre;
+			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.nombre_cliente,
+														detalles.nombre_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
 														detalles.estado, detalles.observacion));
 		}
 		private async void OnItemSelectedP(object sender, ItemTappedEventArgs e)
 		{
-			var detalles = e.Item as Ventas;
-			await Navigation.PushAsync(new MostrarVentaPendiente(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+			var detalles = e.Item as VentasNombre;
+			await Navigation.PushAsync(new MostrarVentaPendiente(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.nombre_cliente,
+														detalles.nombre_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
 														detalles.estado, detalles.observacion));
 		}
 		private async void OnItemSelectedC(object sender, ItemTappedEventArgs e)
 		{
-			var detalles = e.Item as Ventas;
-			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.id_cliente,
-														detalles.id_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
+			var detalles = e.Item as VentasNombre;
+			await Navigation.PushAsync(new MostrarVenta(detalles.id_venta, detalles.fecha, detalles.numero_factura, detalles.nombre_cliente,
+														detalles.nombre_vendedor, detalles.tipo_venta, detalles.saldo, detalles.total, detalles.fecha_entrega,
 														detalles.estado, detalles.observacion));
 		}
 	}

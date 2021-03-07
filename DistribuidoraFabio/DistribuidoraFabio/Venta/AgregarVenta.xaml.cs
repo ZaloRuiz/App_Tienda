@@ -1,5 +1,6 @@
 ﻿using DistribuidoraFabio.Helpers;
 using DistribuidoraFabio.Models;
+using dotMorten.Xamarin.Forms;
 using Newtonsoft.Json;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -11,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace DistribuidoraFabio.Venta
@@ -81,18 +84,126 @@ namespace DistribuidoraFabio.Venta
         {
             try
             {
-                HttpClient client = new HttpClient();
-                var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/productos/listaProductoNombres.php");
-                var prodsList = JsonConvert.DeserializeObject<List<ProductoNombre>>(response).ToList();
-                foreach (var item in prodsList)
-                {
-                    prods.Add(item);
-                }
-                picker_Producto.ItemsSource = prodsList;
-            }
+				HttpClient client = new HttpClient();
+				var response = await client.GetStringAsync("https://dmrbolivia.com/api_distribuidora/productos/listaProductoNombres.php");
+				var prodsList = JsonConvert.DeserializeObject<List<ProductoNombre>>(response).ToList();
+				foreach (var item in prodsList)
+				{
+					prods.Add(item);
+				}
+			}
             catch (Exception error)
             {
                 await DisplayAlert("Error", error.ToString(), "OK");
+            }
+        }
+        List<string> _listSuggestion = null;
+        private async void entryNombreProd_TextChanged_1(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs e)
+        {
+            App.Current.On<Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+            try
+            {
+                if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+                {
+                    List<string> _nameList = new List<string>();
+                    foreach (var item in prods.Distinct())
+                    {
+                        _nameList.Add(item.nombre_producto);
+                    }
+                    _listSuggestion = _nameList.Where(x => x.ToLower().Contains(sender.Text.ToLower())).ToList();
+                    sender.ItemsSource = _listSuggestion;
+                }
+            }
+            catch (Exception err)
+            {
+                await DisplayAlert("ERROR", err.ToString(), "OK");
+            }
+        }
+        string pickedProducto;
+        private async void entryNombreProd_SuggestionChosen_1(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        {
+            try
+            {
+                var selectedItem = e.SelectedItem.ToString();
+                sender.Text = selectedItem;
+                if(sender.Text != string.Empty)
+				{
+                    pickedProducto = selectedItem;
+                    try
+                    {
+                        foreach (var item in prods)
+                        {
+                            if (pickedProducto == item.nombre_producto)
+                            {
+                                txtPrecio.Text = item.precio_venta.ToString("0.##");
+                                txtStock.Text = item.stock.ToString();
+                                txtStockValorado.Text = item.stock_valorado.ToString();
+                                txtPromedio.Text = item.promedio.ToString();
+                                idProductoSelected = item.id_producto;
+                            }
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        await DisplayAlert("ERROR", err.ToString(), "OK");
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                await DisplayAlert("ERROR", err.ToString(), "OK");
+            }
+        }
+        //private async void picker_Producto_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var picker = (Picker)sender;
+        //        int selectedIndex = picker.SelectedIndex;
+
+        //        if (selectedIndex != -1)
+        //        {
+        //            pickedProducto = picker.Items[selectedIndex];
+        //            try
+        //            {
+        //                foreach (var item in prods)
+        //                {
+        //                    if (pickedProducto == item.nombre_producto)
+        //                    {
+        //                        txtPrecio.Text = item.precio_venta.ToString("0.##");
+        //                        txtStock.Text = item.stock.ToString();
+        //                        txtStockValorado.Text = item.stock_valorado.ToString();
+        //                        txtPromedio.Text = item.promedio.ToString();
+        //                        idProductoSelected = item.id_producto;
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception err)
+        //            {
+        //                await DisplayAlert("ERROR", err.ToString(), "OK");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        await DisplayAlert("ERROR", err.ToString(), "OK");
+        //    }
+        //}
+        private async void entryNombreProd_QuerySubmitted_1(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        {
+            try
+            {
+                if (e.ChosenSuggestion != null)
+                {
+                    entryNombreProd.Text = e.ChosenSuggestion.ToString();
+                }
+                else
+                {
+                }
+            }
+            catch (Exception err)
+            {
+                await DisplayAlert("ERROR", err.ToString(), "OK");
             }
         }
         private string vendedorPick;
@@ -179,42 +290,6 @@ namespace DistribuidoraFabio.Venta
                 }
             }
         }
-        string pickedProducto;
-        private async void picker_Producto_SelectedIndexChanged(object sender, EventArgs e)
-        {
-			try
-			{
-				var picker = (Picker)sender;
-				int selectedIndex = picker.SelectedIndex;
-
-				if (selectedIndex != -1)
-				{
-					pickedProducto = picker.Items[selectedIndex];
-					try
-					{
-						foreach (var item in prods)
-						{
-							if (pickedProducto == item.nombre_producto)
-							{
-								txtPrecio.Text = item.precio_venta.ToString("0.##");
-								txtStock.Text = item.stock.ToString();
-								txtStockValorado.Text = item.stock_valorado.ToString();
-								txtPromedio.Text = item.promedio.ToString();
-								idProductoSelected = item.id_producto;
-							}
-						}
-					}
-					catch (Exception err)
-					{
-						await DisplayAlert("ERROR", err.ToString(), "OK");
-					}
-				}
-			}
-			catch (Exception err)
-			{
-				await DisplayAlert("ERROR", err.ToString(), "OK");
-			}
-		}
         decimal precioSelected = 0;
         int cantidaSelected = 0;
         decimal descuentoSelected = 0;
@@ -282,8 +357,9 @@ namespace DistribuidoraFabio.Venta
 					stock_valorado = stockValoradoSelected,
 					promedio = promedioSelected
 				});
-				picker_Producto.SelectedIndex = -1;
-				//picker_Producto.Items.Clear();
+                //picker_Producto.SelectedIndex = -1;
+                //picker_Producto.Items.Clear();
+                entryNombreProd.Text = string.Empty;
 				txtPrecio.Text = string.Empty;
 				txtCantidad.Text = string.Empty;
 				txtDescuento.Text = string.Empty;
